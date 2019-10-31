@@ -1,8 +1,8 @@
 package club.geek66.downloader.impl.meitulu.entity;
 
-import club.geek66.downloader.entity.ImageExtensionName;
-import club.geek66.downloader.entity.Journal;
-import club.geek66.downloader.entity.JournalImage;
+import club.geek66.downloader.domain.ImageExtensionName;
+import club.geek66.downloader.domain.Journal;
+import club.geek66.downloader.domain.JournalImage;
 
 /**
  * @author: orange

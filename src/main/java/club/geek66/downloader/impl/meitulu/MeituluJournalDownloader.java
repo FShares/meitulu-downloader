@@ -1,6 +1,6 @@
 package club.geek66.downloader.impl.meitulu;
 
-import club.geek66.downloader.entity.Journal;
+import club.geek66.downloader.domain.Journal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

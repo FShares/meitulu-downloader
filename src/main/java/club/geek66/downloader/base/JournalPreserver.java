@@ -1,7 +1,7 @@
 package club.geek66.downloader.base;
 
-import club.geek66.downloader.entity.Journal;
-import club.geek66.downloader.entity.JournalImage;
+import club.geek66.downloader.domain.Journal;
+import club.geek66.downloader.domain.JournalImage;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.InitializingBean;
 

@@ -1,4 +1,4 @@
-package club.geek66.downloader.entity;
+package club.geek66.downloader.domain;
 
 import lombok.RequiredArgsConstructor;
 

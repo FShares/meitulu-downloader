@@ -2,8 +2,8 @@ package club.geek66.downloader.impl.meitulu;
 
 import club.geek66.downloader.base.JournalPreserver;
 import club.geek66.downloader.DownloaderConfiguration;
-import club.geek66.downloader.entity.Journal;
-import club.geek66.downloader.entity.JournalImage;
+import club.geek66.downloader.domain.Journal;
+import club.geek66.downloader.domain.JournalImage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
