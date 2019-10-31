@@ -1,8 +1,6 @@
-package club.geek66.downloader.impl.meitulu;
+package club.geek66.downloader.base;
 
-import club.geek66.downloader.base.JournalAnalyser;
-import club.geek66.downloader.domain.Journal;
-import club.geek66.downloader.impl.meitulu.entity.MeituluJournalImage;
+import club.geek66.downloader.common.domain.Journal;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
@@ -17,8 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
-import static club.geek66.downloader.domain.ImageExtensionName.JPG;
 
 /**
  * @author: orange
@@ -87,10 +83,10 @@ public class MeituluJournalAnalyser implements JournalAnalyser {
 		Integer number = parseJournalNumber(journalUrl);
 		Integer imageSize = Integer.valueOf(StringUtils.substringBetween(imageSizeText, " ", " "));
 
-		Journal journal = new Journal(titleText, null, number, null);
-		analysedJournalImages(journal, imageSize);
+		/*Journal journal = new Journal(titleText, number, null, null);
+		analysedJournalImages(journal, imageSize);*/
 
-		return journal;
+		return null;
 	}
 
 	private Integer parseJournalNumber(String journalUrl) {
@@ -119,9 +115,7 @@ public class MeituluJournalAnalyser implements JournalAnalyser {
 
 		for (int i = 0; i < imageSize; i++) {
 
-			MeituluJournalImage journalImage = new MeituluJournalImage(String.valueOf(i + 1), JPG, journal);
-			journal.getImages().add(journalImage);
-
+			// TODO
 		}
 
 	}

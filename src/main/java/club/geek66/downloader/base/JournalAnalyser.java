@@ -1,6 +1,6 @@
 package club.geek66.downloader.base;
 
-import club.geek66.downloader.domain.Journal;
+import club.geek66.downloader.common.domain.Journal;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import java.util.List;
  * @time: 下午12:16
  * @copyright: Copyright 2019 by orange
  */
+@Deprecated
 public interface JournalAnalyser {
 
 	/**

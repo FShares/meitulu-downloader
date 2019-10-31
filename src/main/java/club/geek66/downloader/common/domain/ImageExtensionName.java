@@ -1,4 +1,4 @@
-package club.geek66.downloader.domain;
+package club.geek66.downloader.common.domain;
 
 /**
  * @author: orange

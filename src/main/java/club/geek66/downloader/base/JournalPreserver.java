@@ -1,7 +1,7 @@
 package club.geek66.downloader.base;
 
-import club.geek66.downloader.domain.Journal;
-import club.geek66.downloader.domain.JournalImage;
+import club.geek66.downloader.common.domain.Journal;
+import club.geek66.downloader.common.domain.JournalImage;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -15,6 +15,7 @@ import java.nio.file.Paths;
  * @time: 下午12:18
  * @copyright: Copyright 2019 by orange
  */
+@Deprecated
 public interface JournalPreserver extends InitializingBean {
 
 	/**
@@ -22,13 +23,11 @@ public interface JournalPreserver extends InitializingBean {
 	 */
 	@Override
 	default void afterPropertiesSet() {
-
 		try {
 			Files.createDirectories(Paths.get(getSaveDirectory()));
 		} catch (IOException e) {
 			throw new RuntimeException(e.getMessage());
 		}
-
 	}
 
 	String getSaveDirectory();
@@ -66,8 +65,7 @@ public interface JournalPreserver extends InitializingBean {
 
 		String savePathFormat = getSavePathFormat();
 
-		Journal journal = meiTuImage.getJournal();
-		return String.format(savePathFormat, journal.getNumber(), meiTuImage.getFullName());
+		return null;
 	}
 
 	default String getSavePathFormat() {

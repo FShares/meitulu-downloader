@@ -17,13 +17,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class MeituluJournalDownloaderTest {
 
 	@Autowired
-	private MeituluJournalDownloader downloader;
-
 	@Test
 	public void downloadJournalByPaging() {
 
-		downloader.downloadJournalByPaging("https://www.meitulu.com/t/xujiale-cake/");
-		downloader.downloadJournalByPaging("https://www.meitulu.com/t/sugar-xiaotianxincc/");
+		/*downloader.downloadJournalByPaging("https://www.meitulu.com/t/xujiale-cake/");
+		downloader.downloadJournalByPaging("https://www.meitulu.com/t/sugar-xiaotianxincc/");*/
 
 	}
 }

@@ -1,6 +1,6 @@
 package club.geek66.downloader.impl.meitulu.rpc;
 
-import club.geek66.downloader.impl.meitulu.enumeration.MeituClassification;
+import club.geek66.downloader.impl.meitulu.rpc.MeituluPageClient.MeituClassification;
 import org.jsoup.nodes.Document;
 import org.junit.Assert;
 import org.junit.Test;

@@ -1,5 +1,6 @@
 package club.geek66.downloader.impl.meitulu;
 
+import club.geek66.downloader.base.MeituluJournalAnalyser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
