@@ -1,7 +1,7 @@
 package club.geek66.downloader.impl.meitulu;
 
 import club.geek66.downloader.base.JournalAnalyser;
-import club.geek66.downloader.base.entity.Journal;
+import club.geek66.downloader.entity.Journal;
 import club.geek66.downloader.impl.meitulu.entity.MeituluJournalImage;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import static club.geek66.downloader.base.entity.ImageExtensionName.JPG;
+import static club.geek66.downloader.entity.ImageExtensionName.JPG;
 
 /**
  * @author: orange

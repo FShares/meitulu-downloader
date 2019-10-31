@@ -1,4 +1,4 @@
-package club.geek66.downloader.base.entity;
+package club.geek66.downloader.entity;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

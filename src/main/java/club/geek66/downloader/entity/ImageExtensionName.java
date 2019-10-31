@@ -1,4 +1,4 @@
-package club.geek66.downloader.base.entity;
+package club.geek66.downloader.entity;
 
 /**
  * @author: orange

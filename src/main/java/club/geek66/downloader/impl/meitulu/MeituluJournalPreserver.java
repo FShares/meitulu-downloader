@@ -1,9 +1,9 @@
 package club.geek66.downloader.impl.meitulu;
 
 import club.geek66.downloader.base.JournalPreserver;
-import club.geek66.downloader.base.config.DownloaderConfiguration;
-import club.geek66.downloader.base.entity.Journal;
-import club.geek66.downloader.base.entity.JournalImage;
+import club.geek66.downloader.DownloaderConfiguration;
+import club.geek66.downloader.entity.Journal;
+import club.geek66.downloader.entity.JournalImage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -34,7 +34,7 @@ public class MeituluJournalPreserver implements JournalPreserver {
 
 	@Override
 	public String getSaveDirectory() {
-		return configuration.getSaveDirectory();
+		return configuration.getHome();
 	}
 
 	// 图片的完整路径

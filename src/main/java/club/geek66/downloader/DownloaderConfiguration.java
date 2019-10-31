@@ -1,7 +1,7 @@
-package club.geek66.downloader.base.config;
+package club.geek66.downloader;
 
 import lombok.Data;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @author: orange
@@ -10,15 +10,17 @@ import org.springframework.stereotype.Component;
  * @copyright: Copyright 2019 by orange
  */
 @Data
-@Component
+@ConfigurationProperties("image")
 public class DownloaderConfiguration {
 
-	private String saveDirectory = "/home/orange/.cache/journal/";
+	private String home = "/home/orange/.cache/journal/";
+
+	private MeituluConfiguration meitulu = new MeituluConfiguration();
 
 	public static class MeituluConfiguration {
 
 		// 每一页的大小
-		private Integer journalImagePageSize = 4;
+		private Integer imagePagesize = 4;
 
 		// 每一页的专辑数量
 		private Integer JournalPageSize = 60;

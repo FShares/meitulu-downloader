@@ -1,7 +1,7 @@
 package club.geek66.downloader.test.meitulu;
 
 import club.geek66.downloader.base.JournalPreserver;
-import club.geek66.downloader.base.entity.Journal;
+import club.geek66.downloader.entity.Journal;
 import club.geek66.downloader.impl.meitulu.entity.MeituluJournalImage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
 
-import static club.geek66.downloader.base.entity.ImageExtensionName.JPG;
+import static club.geek66.downloader.entity.ImageExtensionName.JPG;
 
 /**
  * @author: orange
