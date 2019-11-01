@@ -1,7 +1,7 @@
-package club.geek66.downloader.impl.meitulu.service;
+package club.geek66.downloader.meitulu.service;
 
 import club.geek66.downloader.common.domain.JournalCombination;
-import club.geek66.downloader.impl.meitulu.rpc.MeituluPageClient;
+import club.geek66.downloader.meitulu.rpc.MeituluPageClient;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;

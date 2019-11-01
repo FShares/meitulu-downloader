@@ -19,14 +19,19 @@ import java.util.List;
 @AllArgsConstructor
 public class Journal {
 
+	public Long id;
+
 	public String title; // 标题
 
 	public Integer number; // 期刊编号
 
-	public Integer imageCount;
+	private String resolution;
+
+	public Date publishTime; // 发行时间
+
+	private String additional; // 补充说明
 
 	public List<JournalImage> images = new ArrayList<>(); // 图片
 
-	public Date publishTime; // 发行时间
 
 }

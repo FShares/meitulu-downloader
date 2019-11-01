@@ -1,4 +1,4 @@
-package club.geek66.downloader.impl.meitulu.rpc;
+package club.geek66.downloader.meitulu.rpc;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

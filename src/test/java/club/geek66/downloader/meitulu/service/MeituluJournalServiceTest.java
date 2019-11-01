@@ -1,4 +1,4 @@
-package club.geek66.downloader.impl.meitulu.service;
+package club.geek66.downloader.meitulu.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -6,24 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.*;
-
 /**
  * @author: 橙子
- * @date: 2019/11/1
- * @time: 0:02
+ * @date: 2019/10/31
+ * @time: 22:33
  * @copyright: Copyright 2019 by 橙子
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class MeituluJournalCombinationServiceTest {
+public class MeituluJournalServiceTest {
 
 	@Autowired
-	private MeituluJournalCombinationService service;
+	private MeituluJournalService service;
 
 	@Test
-	public void downloadJournalCombination() {
-		// service.downloadJournalCombination("sugar-xiaotianxincc");
-		service.downloadJournalCombination("1148");
+	public void testDownloadJournal() {
+		service.downloadJournal(18993);
+		// service.downloadJournal(16354);
 	}
+
 }

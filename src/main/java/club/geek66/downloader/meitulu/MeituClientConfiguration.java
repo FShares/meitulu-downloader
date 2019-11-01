@@ -1,7 +1,7 @@
-package club.geek66.downloader.impl.meitulu;
+package club.geek66.downloader.meitulu;
 
-import club.geek66.downloader.impl.meitulu.rpc.MeituluImageClient;
-import club.geek66.downloader.impl.meitulu.rpc.MeituluPageClient;
+import club.geek66.downloader.meitulu.rpc.MeituluImageClient;
+import club.geek66.downloader.meitulu.rpc.MeituluPageClient;
 import feign.Contract;
 import feign.Feign;
 import feign.RequestInterceptor;

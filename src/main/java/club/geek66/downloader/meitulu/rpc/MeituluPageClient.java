@@ -1,4 +1,4 @@
-package club.geek66.downloader.impl.meitulu.rpc;
+package club.geek66.downloader.meitulu.rpc;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,23 +16,17 @@ public interface MeituluPageClient {
 
 	// 图片页面
 	@GetMapping("/item/{journalId}.html")
-	Document getImagePage(@PathVariable String journalId);
+	Document getJournalPage(@PathVariable Integer journalId);
 
-	// 分类页面
-	@GetMapping("/t/{classification}/")
-	Document getClassificationPage(@PathVariable String classification);
+	// 第二页开始到结束需要传pageNo否则用上
+	@GetMapping("/item/{journalId}_{pageNo}.html")
+	Document getJournalPage(@PathVariable Integer journalId, @PathVariable Integer pageNo);
 
-	// 模特页面
-	@GetMapping("/t/{modelId}/")
-	Document getModelPage(@PathVariable String modelId);
-
-	// 下面两个废弃
 	@GetMapping("/t/{combinationId}/")
 	Document getCombinationPage(@PathVariable String combinationId);
 
-	// 机构页面
-	@GetMapping("/t/{mechanismId}/")
-	Document getMechanismPage(@PathVariable String mechanismId);
+	@GetMapping("/t/{combinationId}/{pageNo}.html")
+	Document getCombinationPage(@PathVariable String combinationId, @PathVariable Integer pageNo);
 
 	// 查询页面
 	@GetMapping("/search/{keyword}")

@@ -1,4 +1,4 @@
-package club.geek66.downloader.impl.dto;
+package club.geek66.downloader.meitulu.dto;
 
 import club.geek66.downloader.common.domain.Journal;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CombinationPageDto {
+public class CombinationPageInfoDto {
 
 	private Integer journalCount;
 

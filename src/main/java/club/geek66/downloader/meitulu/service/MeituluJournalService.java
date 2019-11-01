@@ -1,12 +1,13 @@
-package club.geek66.downloader.impl.meitulu.service;
+package club.geek66.downloader.meitulu.service;
 
 import club.geek66.downloader.common.configuration.DownloaderConfiguration;
 import club.geek66.downloader.common.domain.Journal;
 import club.geek66.downloader.common.domain.JournalImage;
-import club.geek66.downloader.impl.meitulu.rpc.MeituluImageClient;
-import club.geek66.downloader.impl.meitulu.rpc.MeituluPageClient;
+import club.geek66.downloader.meitulu.dto.JournalPageInfoDto;
+import club.geek66.downloader.meitulu.rpc.MeituluImageClient;
+import club.geek66.downloader.meitulu.rpc.MeituluPageClient;
 import lombok.RequiredArgsConstructor;
-import org.jsoup.nodes.Document;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -35,10 +36,12 @@ public class MeituluJournalService {
 	private final MeituluPageReaderService reader;
 
 	public void downloadJournal(Integer journalId) {
-		Document document = pageClient.getImagePage(journalId.toString());
-		Journal journal = reader.readJournalPage(document);
+		JournalPageInfoDto pageInfo = reader.readJournalPage(pageClient.getJournalPage(journalId));
+		Journal journal = new Journal();
+		BeanUtils.copyProperties(pageInfo, journal);
+
 		List<JournalImage> images = journal.getImages();
-		for (int i = 1; i <= journal.getImageCount(); i++) {
+		for (int i = 1; i <= pageInfo.getImageCount(); i++) {
 			JournalImage image = new JournalImage(i, generateImagePath(journalId, i), 0);
 			images.add(image);
 		}

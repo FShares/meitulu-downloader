@@ -1,6 +1,6 @@
-package club.geek66.downloader.impl.meitulu.rpc;
+package club.geek66.downloader.meitulu.rpc;
 
-import club.geek66.downloader.impl.meitulu.rpc.MeituluPageClient.MeituClassification;
+import club.geek66.downloader.meitulu.rpc.MeituluPageClient.MeituClassification;
 import org.jsoup.nodes.Document;
 import org.junit.Assert;
 import org.junit.Test;
@@ -35,26 +35,32 @@ public class MeituClientTest {
 	}
 
 	@Test
-	public void testGetImagePage() {
-		Document imagePage = pageClient.getImagePage("19482");
+	public void testGetJournalPage() {
+		Document imagePage = pageClient.getJournalPage(19482);
+		Assert.assertNotNull(imagePage);
+	}
+
+	@Test
+	public void testGetJournalPage2() {
+		Document imagePage = pageClient.getJournalPage(16443, 2);
 		Assert.assertNotNull(imagePage);
 	}
 
 	@Test
 	public void testGetClassificationPage() {
-		Document classificationPage = pageClient.getClassificationPage(MeituClassification.BAO_RU.getId());
+		Document classificationPage = pageClient.getCombinationPage(MeituClassification.BAO_RU.getId());
 		Assert.assertNotNull(classificationPage);
 	}
 
 	@Test
 	public void testGetModelPage() {
-		Document modelPage = pageClient.getModelPage("1148");
+		Document modelPage = pageClient.getCombinationPage("1148");
 		Assert.assertNotNull(modelPage);
 	}
 
 	@Test
 	public void testGetMechanismPage() {
-		Document mechanismPage = pageClient.getMechanismPage("1371");
+		Document mechanismPage = pageClient.getCombinationPage("1371");
 		Assert.assertNotNull(mechanismPage);
 	}
 
@@ -62,6 +68,12 @@ public class MeituClientTest {
 	public void testGetSearchPage() {
 		Document searchPage = pageClient.getSearchPage("筱慧");
 		Assert.assertNotNull(searchPage);
+	}
+
+	@Test
+	public void testGetCombinationPage() {
+		Document combinationPage = pageClient.getCombinationPage("sugar-xiaotianxincc", 2);
+		Assert.assertNotNull(combinationPage);
 	}
 
 }
