@@ -1,6 +1,5 @@
 package club.geek66.downloader.meitulu.service;
 
-import club.geek66.downloader.common.domain.JournalCombination;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,6 @@ public class MeituluJournalCombinationServiceTest {
 
 	@Test
 	public void downloadJournalCombination() {
-		JournalCombination combination = service.downloadJournalCombination("1148");
+		service.downloadJournalCombination("1148");
 	}
 }

@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Journal {
 
-	public Long id;
+	public Integer id;
 
 	public String title; // 标题
 
@@ -32,6 +32,5 @@ public class Journal {
 	private String additional; // 补充说明
 
 	public List<JournalImage> images = new ArrayList<>(); // 图片
-
 
 }

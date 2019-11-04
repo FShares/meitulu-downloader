@@ -17,6 +17,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class JournalPageInfoDto {
 
+	private Integer id; // id
+
 	private String title; // 标题
 
 	private String publishMechanism; // 发行机构

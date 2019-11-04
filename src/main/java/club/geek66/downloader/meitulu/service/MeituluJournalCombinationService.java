@@ -1,10 +1,15 @@
 package club.geek66.downloader.meitulu.service;
 
-import club.geek66.downloader.common.domain.JournalCombination;
+import club.geek66.downloader.common.configuration.DownloaderConfiguration;
+import club.geek66.downloader.meitulu.dto.JournalCombinationPageInfoDto;
+import club.geek66.downloader.meitulu.dto.JournalPageInfoDto;
 import club.geek66.downloader.meitulu.rpc.MeituluPageClient;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author: 橙子
@@ -20,12 +25,37 @@ public class MeituluJournalCombinationService {
 
 	private final MeituluPageReaderService reader;
 
-	public JournalCombination downloadJournalCombination(String combinationId) {
+	private final DownloaderConfiguration configuration;
 
+	private final MeituluJournalService journalService;
+
+	public void downloadJournalCombination(String combinationId) {
+		JournalCombinationPageInfoDto combinationInfo = getJournalCombinationInfo(combinationId);
+
+		Integer journalCount = combinationInfo.getJournalCount();
+		Integer journalPageSize = configuration.getMeitulu().getJournalPageSize();
+
+		int totalPage = (int) Math.ceil((double) journalCount / journalPageSize);
+
+		for (int pageNo = 1; pageNo <= totalPage; pageNo++) {
+			Document combinationPage = pageNo != 1 ? pageClient.getCombinationPage(combinationId, pageNo) : pageClient.getCombinationPage(combinationId);
+			List<JournalPageInfoDto> journalPageInfos = reader.readJournalsInfo(combinationPage);
+			combinationInfo.getJournalPages().put(pageNo, journalPageInfos);
+		}
+		saveJournalCombination(combinationInfo);
+	}
+
+	private void saveJournalCombination(JournalCombinationPageInfoDto combinationInfo) {
+		Map<Integer, List<JournalPageInfoDto>> journalPages = combinationInfo.getJournalPages();
+		journalPages.values().forEach(journals ->
+				journals.parallelStream().forEach(
+						journalPage -> journalService.downloadJournal(journalPage.getId())
+				));
+	}
+
+	private JournalCombinationPageInfoDto getJournalCombinationInfo(String combinationId) {
 		Document combinationPage = pageClient.getCombinationPage(combinationId);
-		reader.readCombinationPage(combinationPage);
-
-		return null;
+		return reader.readCombinationPage(combinationPage);
 	}
 
 }

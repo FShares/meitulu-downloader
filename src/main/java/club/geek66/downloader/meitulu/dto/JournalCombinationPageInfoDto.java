@@ -1,11 +1,12 @@
 package club.geek66.downloader.meitulu.dto;
 
-import club.geek66.downloader.common.domain.Journal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: 橙子
@@ -16,10 +17,14 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CombinationPageInfoDto {
+public class JournalCombinationPageInfoDto {
+
+	private String headImage;
+
+	private String description;
 
 	private Integer journalCount;
 
-	private List<Journal> journals;
+	private Map<Integer, List<JournalPageInfoDto>> journalPages = new HashMap<>();
 
 }

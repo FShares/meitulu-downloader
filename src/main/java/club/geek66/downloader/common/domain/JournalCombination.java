@@ -20,6 +20,6 @@ public class JournalCombination {
 
 	private String description;
 
-	private List<Journal> images;
+	private List<Journal> journals;
 
 }
