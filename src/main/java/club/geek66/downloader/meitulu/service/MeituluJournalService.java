@@ -10,11 +10,13 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -44,37 +46,48 @@ public class MeituluJournalService {
 		JournalPageInfoDto pageInfo = reader.readJournalPage(pageClient.getJournalPage(journalId));
 		BeanUtils.copyProperties(pageInfo, journal);
 
-		journal.setImages(generateJournalImage(pageInfo));
+		journal.setImages(generateJournalImage(pageInfo, journal));
 		saveImageToLocal(journal);
 	}
 
 	private void saveImageToLocal(Journal journal) {
 		List<JournalImage> images = journal.getImages();
-		images.parallelStream().forEach(image -> {
-			File self = Path.of(image.getPath()).toFile();
-			File parent = self.getParentFile();
-			if (!parent.exists()) {
-				parent.mkdirs();
-			} else {
-				if (self.exists()) {
+		images.parallelStream().forEach(this::doSave);
+	}
+
+	private void doSave(JournalImage image) {
+		Journal journal = image.getJournal();
+		File self = Path.of(image.getPath()).toFile();
+		File parent = self.getParentFile();
+		if (!parent.exists()) {
+			parent.mkdirs();
+		} else {
+			if (self.exists()) {
+				ResponseEntity<Object> modelImageInfo = imageClient.getModelImageInfo(journal.getId(), image.getIndex());
+				long contentLength = modelImageInfo.getHeaders().getContentLength();
+				long fileLength = self.length();
+				if (contentLength == fileLength) {
+					log.info("image exist! journal id {}, image index {}", journal.getId(), image.getIndex());
 					return;
 				}
 			}
-			try {
-				BufferedImage downloadImage = imageClient.getModelImage(journal.getId(), image.getIndex());
-				ImageIO.write(downloadImage, "jpg", self);
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (FeignException.NotFound notFound) {
-				log.warn("iamge not found! journal id {}, image index {}", journal.getId(), image.getIndex());
-			}
-		});
+		}
+
+
+		try {
+			ResponseEntity<Resource> modelImage = imageClient.getModelImage(journal.getId(), image.getIndex());
+			FileCopyUtils.copy(modelImage.getBody().getInputStream(), new FileOutputStream(self));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (FeignException.NotFound notFound) {
+			log.warn("image not found! journal id {}, image index {}", journal.getId(), image.getIndex());
+		}
 	}
 
-	private List<JournalImage> generateJournalImage(JournalPageInfoDto pageInfoDto) {
+	private List<JournalImage> generateJournalImage(JournalPageInfoDto pageInfoDto, Journal journal) {
 		List<JournalImage> images = new ArrayList<>();
 		for (int i = 1; i <= pageInfoDto.getImageCount(); i++) {
-			JournalImage image = new JournalImage(i, generateImagePath(pageInfoDto.getId(), i), 0);
+			JournalImage image = new JournalImage(journal, i, generateImagePath(pageInfoDto.getId(), i), 0);
 			images.add(image);
 		}
 		return images;

@@ -21,6 +21,10 @@ public class MeituluJournalCombinationServiceTest {
 
 	@Test
 	public void downloadJournalCombination() {
-		service.downloadJournalCombination("1148");
+		// service.downloadJournalCombination("1148");
+		// service.downloadJournalCombination("yuji-una");
+		// service.downloadJournalCombination("wangyuchun");
+		// service.downloadJournalCombination("1165");
+		service.downloadJournalCombination("sugar-xiaotianxincc");
 	}
 }

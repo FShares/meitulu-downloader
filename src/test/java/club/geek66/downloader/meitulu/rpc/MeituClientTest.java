@@ -7,9 +7,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 
 /**
@@ -30,8 +32,21 @@ public class MeituClientTest {
 
 	@Test
 	public void testGetImage() {
-		BufferedImage modelImage = imageClient.getModelImage(19484, 1);
+		ResponseEntity<Resource> modelImage = imageClient.getModelImage(19484, 1);
 		Assert.assertNotNull(modelImage);
+	}
+
+	@Test
+	public void testCompareImage() throws IOException {
+		Long realLength = imageClient.getModelImage(19484, 1).getBody().contentLength();
+		Long expectLength = imageClient.getModelImageInfo(19484, 1).getHeaders().getContentLength();
+		Assert.assertEquals(realLength, expectLength);
+	}
+
+	@Test
+	public void testHeadImage() {
+		ResponseEntity<Object> modelImageInfo = imageClient.getModelImageInfo(14195, 16);
+		System.out.println(modelImageInfo);
 	}
 
 	@Test

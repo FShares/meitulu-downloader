@@ -1,9 +1,11 @@
 package club.geek66.downloader.meitulu.rpc;
 
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import java.awt.image.BufferedImage;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * @author: 橙子
@@ -13,8 +15,10 @@ import java.awt.image.BufferedImage;
  */
 public interface MeituluImageClient {
 
-	// 图片页面
 	@GetMapping("/images/img/{journalId}/{index}.jpg")
-	BufferedImage getModelImage(@PathVariable Integer journalId, @PathVariable Integer index);
+	ResponseEntity<Resource> getModelImage(@PathVariable Integer journalId, @PathVariable Integer index);
+
+	@RequestMapping(value = "/images/img/{journalId}/{index}.jpg", method = RequestMethod.HEAD)
+	ResponseEntity<Object> getModelImageInfo(@PathVariable Integer journalId, @PathVariable Integer index);
 
 }

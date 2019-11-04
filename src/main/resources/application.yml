@@ -1,2 +1,6 @@
 image:
   home: /image/journal/
+
+logging:
+  level:
+    club.geek66.downloader: warn

@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class JournalImage {
 
+	public Journal journal;
+
 	public Integer index;
 
 	public String path;
