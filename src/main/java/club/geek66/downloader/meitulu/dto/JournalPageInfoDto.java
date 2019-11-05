@@ -17,21 +17,25 @@ import java.util.Date;
 @AllArgsConstructor
 public class JournalPageInfoDto {
 
-	private Integer id; // id
+	private Integer id; // meitulu 写真id
 
 	private String title; // 标题
 
-	private String publishMechanism; // 发行机构
+	private String mechanismName; // 发行机构
+
+	private String mechanismId; // 机构id
 
 	private String journalNumber; // 期刊编号
 
-	private Integer imageCount;
+	private Integer imageCount; // 图片数量
 
-	private String resolution;
+	private String resolution; // 分辨率
 
-	private String modelName;
+	private String modelName; // 模特名
 
-	private Date publishTime; // 发行时间
+	private String modelId; // 模特id
+
+	private Date publishDate; // 发行时间
 
 	private String additional; // 补充说明
 

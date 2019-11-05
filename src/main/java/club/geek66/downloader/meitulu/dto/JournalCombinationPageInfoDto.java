@@ -19,7 +19,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class JournalCombinationPageInfoDto {
 
-	private String headImage;
+	private String title;
 
 	private String description;
 

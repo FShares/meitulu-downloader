@@ -4,6 +4,7 @@ import club.geek66.downloader.common.configuration.DownloaderConfiguration;
 import club.geek66.downloader.common.domain.Journal;
 import club.geek66.downloader.common.domain.JournalImage;
 import club.geek66.downloader.meitulu.dto.JournalPageInfoDto;
+import club.geek66.downloader.meitulu.reader.MeituluPageReader;
 import club.geek66.downloader.meitulu.rpc.MeituluImageClient;
 import club.geek66.downloader.meitulu.rpc.MeituluPageClient;
 import feign.FeignException;
@@ -39,7 +40,7 @@ public class MeituluJournalService {
 
 	private final DownloaderConfiguration configuration;
 
-	private final MeituluPageReaderService reader;
+	private final MeituluPageReader reader;
 
 	public void downloadJournal(Integer journalId) {
 		Journal journal = new Journal();

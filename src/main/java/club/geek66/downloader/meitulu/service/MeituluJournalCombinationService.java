@@ -3,6 +3,7 @@ package club.geek66.downloader.meitulu.service;
 import club.geek66.downloader.common.configuration.DownloaderConfiguration;
 import club.geek66.downloader.meitulu.dto.JournalCombinationPageInfoDto;
 import club.geek66.downloader.meitulu.dto.JournalPageInfoDto;
+import club.geek66.downloader.meitulu.reader.MeituluPageReader;
 import club.geek66.downloader.meitulu.rpc.MeituluPageClient;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.nodes.Document;
@@ -23,7 +24,7 @@ public class MeituluJournalCombinationService {
 
 	private final MeituluPageClient pageClient;
 
-	private final MeituluPageReaderService reader;
+	private final MeituluPageReader reader;
 
 	private final DownloaderConfiguration configuration;
 
@@ -39,7 +40,7 @@ public class MeituluJournalCombinationService {
 
 		for (int pageNo = 1; pageNo <= totalPage; pageNo++) {
 			Document combinationPage = pageNo != 1 ? pageClient.getCombinationPage(combinationId, pageNo) : pageClient.getCombinationPage(combinationId);
-			List<JournalPageInfoDto> journalPageInfos = reader.readJournalsInfo(combinationPage);
+			List<JournalPageInfoDto> journalPageInfos = reader.readCombinationPageJournalsInfo(combinationPage);
 			combinationInfo.getJournalPages().put(pageNo, journalPageInfos);
 		}
 		saveJournalCombination(combinationInfo);
