@@ -84,20 +84,20 @@ public class MeituluPageReader {
 				continue;
 			}
 
-			if (text.contains("发行机构")) {
+			if (text.startsWith("发行机构")) {
 				// 机构名 & id
 				this.readMechanismIdAndName(pageInfo, item);
-			} else if (text.contains("期刊编号")) {
+			} else if (text.startsWith("期刊编号")) {
 				pageInfo.setJournalNumber(StringUtils.substringAfter(text, DETAIL_PREFIX));
-			} else if (text.contains("图片数量")) {
+			} else if (text.startsWith("图片数量")) {
 				int imageCount = subImageCount(text);
 				pageInfo.setImageCount(imageCount);
-			} else if (text.contains("分辨率")) {
+			} else if (text.startsWith("分辨率")) {
 				pageInfo.setResolution(StringUtils.substringAfter(text, DETAIL_PREFIX));
-			} else if (text.contains("模特姓名")) {
+			} else if (text.startsWith("模特姓名")) {
 				// 模特姓名 & id
 				this.readModelIdAndName(pageInfo, item);
-			} else if (text.contains("发行时间")) {
+			} else if (text.startsWith("发行时间")) {
 				for (SimpleDateFormat dateFormat : SUPPORTED_DATE_FORMATS) {
 					if (pageInfo.getPublishDate() != null) {
 						break;
@@ -105,7 +105,6 @@ public class MeituluPageReader {
 					try {
 						pageInfo.setPublishDate(dateFormat.parse(StringUtils.substringAfter(text, DETAIL_PREFIX)));
 					} catch (ParseException ignored) {
-
 					}
 				}
 				if (pageInfo.getPublishDate() == null) {
@@ -165,15 +164,15 @@ public class MeituluPageReader {
 
 						for (Element journalInfo : element.children()) {
 							String text = StringUtils.deleteWhitespace(journalInfo.text());
-							if (text.contains("图片")) {
+							if (text.startsWith("图片")) {
 								Optional.of(text)
 										.map(this::subImageCount)
 										.ifPresent(pageInfo::setImageCount);
-							} else if (text.contains("机构")) {
+							} else if (text.startsWith("机构")) {
 								this.readMechanismIdAndName(pageInfo, journalInfo);
-							} else if (text.contains("模特")) {
+							} else if (text.startsWith("模特")) {
 								this.readModelIdAndName(pageInfo, journalInfo);
-							} else if (text.contains("标签")) {
+							} else if (text.startsWith("标签")) {
 								// TODO tag support
 							} else if (journalInfo.hasClass("p_title")) {
 								Optional.ofNullable(journalInfo.children())
