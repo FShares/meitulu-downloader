@@ -1,4 +1,4 @@
-package club.geek66.downloader.common.domain;
+package club.geek66.downloader.meitulu.domain.enumeration;
 
 /**
  * @author: orange
@@ -22,3 +22,5 @@ public enum ImageExtensionName {
 	private String extensionName;
 
 }
+
+

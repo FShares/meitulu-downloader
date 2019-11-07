@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 public interface MeituluImageClient {
 
-	@GetMapping("/images/img/{journalId}/{index}.jpg")
-	ResponseEntity<Resource> getModelImage(@PathVariable Integer journalId, @PathVariable Integer index);
+	@GetMapping("/images/img/{journalIndex}/{imageIndex}.jpg")
+	ResponseEntity<Resource> getModelImage(@PathVariable Integer journalIndex, @PathVariable Integer imageIndex);
 
-	@RequestMapping(value = "/images/img/{journalId}/{index}.jpg", method = RequestMethod.HEAD)
-	ResponseEntity<Object> getModelImageInfo(@PathVariable Integer journalId, @PathVariable Integer index);
+	@RequestMapping(value = "/images/img/{journalIndex}/{imageIndex}.jpg", method = RequestMethod.HEAD)
+	ResponseEntity<Object> getModelImageInfo(@PathVariable Integer journalIndex, @PathVariable Integer imageIndex);
 
 }

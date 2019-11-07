@@ -15,18 +15,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface MeituluPageClient {
 
 	// 图片页面
-	@GetMapping("/item/{journalId}.html")
-	Document getJournalPage(@PathVariable Integer journalId);
+	@GetMapping("/item/{journalIndex}.html")
+	Document getJournalPage(@PathVariable Integer journalIndex);
 
 	// 第二页开始到结束需要传pageNo否则用上
-	@GetMapping("/item/{journalId}_{pageNo}.html")
-	Document getJournalPage(@PathVariable Integer journalId, @PathVariable Integer pageNo);
+	@GetMapping("/item/{journalIndex}_{pageNo}.html")
+	Document getJournalPage(@PathVariable Integer journalIndex, @PathVariable Integer pageNo);
 
-	@GetMapping("/t/{combinationId}/")
-	Document getCombinationPage(@PathVariable String combinationId);
+	@GetMapping("/t/{combinationIndex}/")
+	Document getCombinationPage(@PathVariable String combinationIndex);
 
-	@GetMapping("/t/{combinationId}/{pageNo}.html")
-	Document getCombinationPage(@PathVariable String combinationId, @PathVariable Integer pageNo);
+	@GetMapping("/t/{combinationIndex}/{pageNo}.html")
+	Document getCombinationPage(@PathVariable String combinationIndex, @PathVariable Integer pageNo);
 
 	// 查询页面
 	@GetMapping("/search/{keyword}")

@@ -2,7 +2,6 @@ package club.geek66.downloader.meitulu.reader;
 
 import club.geek66.downloader.meitulu.dto.JournalCombinationPageInfoDto;
 import club.geek66.downloader.meitulu.dto.JournalPageInfoDto;
-import club.geek66.downloader.meitulu.reader.MeituluPageReader;
 import club.geek66.downloader.meitulu.rpc.MeituluPageClient;
 import org.jsoup.nodes.Document;
 import org.junit.Assert;
@@ -38,14 +37,14 @@ public class MeituluPageReaderTest {
 		Document imagePage = pageClient.getJournalPage(19028);
 		JournalPageInfoDto pageInfo = reader.readJournalPage(imagePage);
 
-		Assert.assertEquals((long) pageInfo.getId(), 19028L);
+		Assert.assertEquals((long) pageInfo.getIndex(), 19028L);
 
 		Assert.assertEquals(pageInfo.getTitle(), "[XIUREN秀人] No.1561 周于希Sandy&Emily顾奈奈酱 - 上演剧情私房系列");
 
 		Assert.assertEquals(pageInfo.getMechanismName(), "秀人网");
 		Assert.assertEquals(pageInfo.getMechanismId(), "xiuren");
 
-		Assert.assertEquals(pageInfo.getJournalNumber(), "No.1561");
+		Assert.assertEquals(pageInfo.getNumber(), "No.1561");
 		Assert.assertEquals((long) pageInfo.getImageCount(), 55L);
 		Assert.assertEquals(pageInfo.getResolution(), "1333X2000");
 
@@ -61,6 +60,7 @@ public class MeituluPageReaderTest {
 		Document combinationPage = pageClient.getCombinationPage("1225");
 		JournalCombinationPageInfoDto pageInfo = reader.readCombinationPage(combinationPage);
 
+		Assert.assertEquals(pageInfo.getIndex(), "1225");
 		Assert.assertEquals(pageInfo.getTitle(), "李可可_李可儿写真图片_高清秀人李可可写真套图");
 		Assert.assertEquals(pageInfo.getDescription(), "李可可资料\n李可可，别名：李可儿。秀人模特，身高163公分，来自深圳。");
 		Assert.assertEquals((long) pageInfo.getJournalCount(), 30);
@@ -74,7 +74,7 @@ public class MeituluPageReaderTest {
 		Assert.assertEquals((long) journalPageInfos.size(), 60L);
 
 		JournalPageInfoDto first = journalPageInfos.get(0);
-		Assert.assertTrue(first.getId() != null);
+		Assert.assertTrue(first.getIndex() != null);
 		Assert.assertTrue(first.getTitle() != null);
 
 		Assert.assertTrue(first.getMechanismName() != null);

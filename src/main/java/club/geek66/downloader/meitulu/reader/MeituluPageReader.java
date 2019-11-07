@@ -27,6 +27,7 @@ import java.util.Optional;
 @Service
 public class MeituluPageReader {
 
+	// 日期解析器
 	private static final Collection<SimpleDateFormat> SUPPORTED_DATE_FORMATS = Arrays.asList(
 			new SimpleDateFormat("yyyy.MM.dd"),
 			new SimpleDateFormat("yyyy-MM-dd"),
@@ -35,16 +36,23 @@ public class MeituluPageReader {
 
 	private static final String DETAIL_PREFIX = "：";
 
-	// 写真页面内信息
+	private static final String ATTR_HREF = "href";
+
+	/**
+	 * 读取写真详情页面内信息
+	 *
+	 * @param journalPageDoc html文档
+	 * @return 写真页面的信息
+	 */
 	public JournalPageInfoDto readJournalPage(Document journalPageDoc) {
 		JournalPageInfoDto pageInfo = new JournalPageInfoDto();
 
-		// 写真 id
+		// 写真 index
 		Optional.of(journalPageDoc.select("head>link[rel=\"alternate\"]"))
 				.map(Elements::first)
-				.map(ele -> ele.attr("href"))
-				.map(this::subJournalId)
-				.ifPresent(pageInfo::setId);
+				.map(ele -> ele.attr(ATTR_HREF))
+				.map(this::subJournalIndex)
+				.ifPresent(pageInfo::setIndex);
 
 		// 写真标题
 		// 示例: [XIUREN秀人] No.1526 模特@筱慧cindy塞班旅拍写真
@@ -77,6 +85,12 @@ public class MeituluPageReader {
 		return pageInfo;
 	}
 
+	/**
+	 * 读取写真详情页面信息
+	 *
+	 * @param journalInfos 详情元素
+	 * @param pageInfo     dto
+	 */
 	private void readJournalInfo(Elements journalInfos, JournalPageInfoDto pageInfo) {
 		for (Element item : journalInfos) {
 			String text = StringUtils.deleteWhitespace(item.text());
@@ -85,18 +99,18 @@ public class MeituluPageReader {
 			}
 
 			if (text.startsWith("发行机构")) {
-				// 机构名 & id
-				this.readMechanismIdAndName(pageInfo, item);
+				// 机构名 & index
+				this.readMechanismIndexAndName(pageInfo, item);
 			} else if (text.startsWith("期刊编号")) {
-				pageInfo.setJournalNumber(StringUtils.substringAfter(text, DETAIL_PREFIX));
+				pageInfo.setNumber(StringUtils.substringAfter(text, DETAIL_PREFIX));
 			} else if (text.startsWith("图片数量")) {
 				int imageCount = subImageCount(text);
 				pageInfo.setImageCount(imageCount);
 			} else if (text.startsWith("分辨率")) {
 				pageInfo.setResolution(StringUtils.substringAfter(text, DETAIL_PREFIX));
 			} else if (text.startsWith("模特姓名")) {
-				// 模特姓名 & id
-				this.readModelIdAndName(pageInfo, item);
+				// 模特姓名 & index
+				this.readModelIndexAndName(pageInfo, item);
 			} else if (text.startsWith("发行时间")) {
 				for (SimpleDateFormat dateFormat : SUPPORTED_DATE_FORMATS) {
 					if (pageInfo.getPublishDate() != null) {
@@ -108,18 +122,31 @@ public class MeituluPageReader {
 					}
 				}
 				if (pageInfo.getPublishDate() == null) {
-					log.warn("Parse journal publish time fail from str {} with journal id {}", text, pageInfo.getId());
+					log.warn("Parse journal publish time fail from str {} with journal index {}", text, pageInfo.getIndex());
 				}
 			}
 		}
 	}
 
-	// 写真集合页面
-	public JournalCombinationPageInfoDto readCombinationPage(Document combinationPage) {
+	/**
+	 * 读取写真集合页面的具体信息
+	 *
+	 * @param combinationPageDoc 写真集合页面的html文档
+	 * @return 详细信息
+	 */
+	public JournalCombinationPageInfoDto readCombinationPage(Document combinationPageDoc) {
 		JournalCombinationPageInfoDto pageInfo = new JournalCombinationPageInfoDto();
 
+		Optional.of(combinationPageDoc.select("link[rel=\"alternate\"]"))
+				.map(Elements::first)
+				.map(ele -> ele.attr(ATTR_HREF))
+				.map(this::subCombinationIndex)
+				.ifPresentOrElse(pageInfo::setIndex, () -> {
+					throw new ReadMeituluPageException("fail to read combination page from " + combinationPageDoc.toString());
+				});
+
 		// title and description
-		Optional.ofNullable(combinationPage.select(".listtags_r"))
+		Optional.ofNullable(combinationPageDoc.select(".listtags_r"))
 				.map(Elements::first)
 				.map(Element::children)
 				.ifPresent(elements -> {
@@ -139,13 +166,13 @@ public class MeituluPageReader {
 				});
 
 		// 图片数量
-		Optional.ofNullable(combinationPage.select("#pages>.a1"))
+		Optional.ofNullable(combinationPageDoc.select("#pages>.a1"))
 				.filter(Elements::hasText)
 				.map(Elements::text)
 				.map(text -> StringUtils.substringBefore(text, "条"))
 				.map(Integer::valueOf)
 				.or(() ->
-						Optional.ofNullable(combinationPage.select(".img"))
+						Optional.ofNullable(combinationPageDoc.select(".img"))
 								.map(Elements::first)
 								.map(Element::children)
 								.map(Elements::size) // 只有一页
@@ -153,11 +180,16 @@ public class MeituluPageReader {
 		return pageInfo;
 	}
 
-	// 写真集合页面中的写真信息集合
-	public List<JournalPageInfoDto> readCombinationPageJournalsInfo(Document combinationPage) {
+	/**
+	 * 写真集合页面中的写真信息集合
+	 *
+	 * @param combinationPageDoc 文档
+	 * @return
+	 */
+	public List<JournalPageInfoDto> readCombinationPageJournalsInfo(Document combinationPageDoc) {
 		List<JournalPageInfoDto> pageInfos = new ArrayList<>();
 
-		Optional.of(combinationPage.select(".img>li"))
+		Optional.of(combinationPageDoc.select(".img>li"))
 				.ifPresent(journalElements -> {
 					for (Element element : journalElements) {
 						JournalPageInfoDto pageInfo = new JournalPageInfoDto();
@@ -169,16 +201,16 @@ public class MeituluPageReader {
 										.map(this::subImageCount)
 										.ifPresent(pageInfo::setImageCount);
 							} else if (text.startsWith("机构")) {
-								this.readMechanismIdAndName(pageInfo, journalInfo);
+								this.readMechanismIndexAndName(pageInfo, journalInfo);
 							} else if (text.startsWith("模特")) {
-								this.readModelIdAndName(pageInfo, journalInfo);
+								this.readModelIndexAndName(pageInfo, journalInfo);
 							} else if (text.startsWith("标签")) {
 								// TODO tag support
 							} else if (journalInfo.hasClass("p_title")) {
 								Optional.ofNullable(journalInfo.children())
 										.map(Elements::first)
 										.ifPresent(aTag -> {
-											pageInfo.setId(this.subJournalId(aTag.attr("href")));
+											pageInfo.setIndex(this.subJournalIndex(aTag.attr(ATTR_HREF)));
 											pageInfo.setTitle(aTag.text());
 										});
 							}
@@ -191,9 +223,9 @@ public class MeituluPageReader {
 		return pageInfos;
 	}
 
-	private Integer subJournalId(String journalPageUrl) {
-		String journalId = StringUtils.substringBetween(journalPageUrl, "/item/", ".html");
-		return Integer.valueOf(journalId);
+	private Integer subJournalIndex(String journalPageUrl) {
+		String journalIndex = StringUtils.substringBetween(journalPageUrl, "/item/", ".html");
+		return Integer.valueOf(journalIndex);
 	}
 
 	private Integer subImageCount(String imageText) {
@@ -201,26 +233,26 @@ public class MeituluPageReader {
 		return Integer.valueOf(imageCount);
 	}
 
-	private String subCombinationId(String combinationPageUrl) {
+	private String subCombinationIndex(String combinationPageUrl) {
 		return StringUtils.substringBetween(combinationPageUrl, "/t/", "/");
 	}
 
-	private void readModelIdAndName(JournalPageInfoDto pageInfo, Element element) {
+	private void readModelIndexAndName(JournalPageInfoDto pageInfo, Element element) {
 		Optional.ofNullable(element.children())
 				.map(Elements::first)
 				.ifPresent(aTag -> {
 					pageInfo.setModelName(aTag.text());
-					pageInfo.setModelId(this.subCombinationId(aTag.attr("href")));
+					pageInfo.setModelId(this.subCombinationIndex(aTag.attr(ATTR_HREF)));
 				});
 		// TODO multi model support
 	}
 
-	private void readMechanismIdAndName(JournalPageInfoDto pageInfo, Element element) {
+	private void readMechanismIndexAndName(JournalPageInfoDto pageInfo, Element element) {
 		Optional.ofNullable(element.children())
 				.map(Elements::first)
 				.ifPresent(aTag -> {
 					pageInfo.setMechanismName(aTag.text());
-					pageInfo.setMechanismId(this.subCombinationId(aTag.attr("href")));
+					pageInfo.setMechanismId(this.subCombinationIndex(aTag.attr(ATTR_HREF)));
 				});
 	}
 

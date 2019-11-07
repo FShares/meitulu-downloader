@@ -19,6 +19,8 @@ import java.util.Map;
 @AllArgsConstructor
 public class JournalCombinationPageInfoDto {
 
+	private String index;
+
 	private String title;
 
 	private String description;

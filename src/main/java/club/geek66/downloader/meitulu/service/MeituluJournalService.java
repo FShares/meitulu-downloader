@@ -1,8 +1,8 @@
 package club.geek66.downloader.meitulu.service;
 
 import club.geek66.downloader.common.configuration.DownloaderConfiguration;
-import club.geek66.downloader.common.domain.Journal;
-import club.geek66.downloader.common.domain.JournalImage;
+import club.geek66.downloader.meitulu.domain.Journal;
+import club.geek66.downloader.meitulu.domain.JournalImage;
 import club.geek66.downloader.meitulu.dto.JournalPageInfoDto;
 import club.geek66.downloader.meitulu.reader.MeituluPageReader;
 import club.geek66.downloader.meitulu.rpc.MeituluImageClient;
@@ -42,9 +42,9 @@ public class MeituluJournalService {
 
 	private final MeituluPageReader reader;
 
-	public void downloadJournal(Integer journalId) {
+	public void downloadJournal(Integer journalIndex) {
 		Journal journal = new Journal();
-		JournalPageInfoDto pageInfo = reader.readJournalPage(pageClient.getJournalPage(journalId));
+		JournalPageInfoDto pageInfo = reader.readJournalPage(pageClient.getJournalPage(journalIndex));
 		BeanUtils.copyProperties(pageInfo, journal);
 
 		journal.setImages(generateJournalImage(pageInfo, journal));
@@ -64,11 +64,11 @@ public class MeituluJournalService {
 			parent.mkdirs();
 		} else {
 			if (self.exists()) {
-				ResponseEntity<Object> modelImageInfo = imageClient.getModelImageInfo(journal.getId(), image.getIndex());
+				ResponseEntity<Object> modelImageInfo = imageClient.getModelImageInfo(journal.getIndex(), image.getIndex());
 				long contentLength = modelImageInfo.getHeaders().getContentLength();
 				long fileLength = self.length();
 				if (contentLength == fileLength) {
-					log.info("image exist! journal id {}, image index {}", journal.getId(), image.getIndex());
+					log.info("image exist! journal index {}, image index {}", journal.getIndex(), image.getIndex());
 					return;
 				}
 			}
@@ -76,26 +76,26 @@ public class MeituluJournalService {
 
 
 		try {
-			ResponseEntity<Resource> modelImage = imageClient.getModelImage(journal.getId(), image.getIndex());
+			ResponseEntity<Resource> modelImage = imageClient.getModelImage(journal.getIndex(), image.getIndex());
 			FileCopyUtils.copy(modelImage.getBody().getInputStream(), new FileOutputStream(self));
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (FeignException.NotFound notFound) {
-			log.warn("image not found! journal id {}, image index {}", journal.getId(), image.getIndex());
+			log.warn("image not found! journal index {}, image index {}", journal.getIndex(), image.getIndex());
 		}
 	}
 
 	private List<JournalImage> generateJournalImage(JournalPageInfoDto pageInfoDto, Journal journal) {
 		List<JournalImage> images = new ArrayList<>();
 		for (int i = 1; i <= pageInfoDto.getImageCount(); i++) {
-			JournalImage image = new JournalImage(journal, i, generateImagePath(pageInfoDto.getId(), i), 0);
+			JournalImage image = new JournalImage(i, journal, generateImagePath(pageInfoDto.getIndex(), i), 0);
 			images.add(image);
 		}
 		return images;
 	}
 
-	private String generateImagePath(Integer journalId, Integer imageIndex) {
-		return Path.of(configuration.getHome(), journalId.toString(), imageIndex + ".jpg").toString();
+	private String generateImagePath(Integer journalIndex, Integer imageIndex) {
+		return Path.of(configuration.getHome(), journalIndex.toString(), imageIndex + ".jpg").toString();
 	}
 
 

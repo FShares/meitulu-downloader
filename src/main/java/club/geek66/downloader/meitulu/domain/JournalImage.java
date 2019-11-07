@@ -1,8 +1,12 @@
-package club.geek66.downloader.common.domain;
+package club.geek66.downloader.meitulu.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 /**
  * @author: orange
@@ -11,13 +15,16 @@ import lombok.NoArgsConstructor;
  * @copyright: Copyright 2019 by orange
  */
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class JournalImage {
-
-	public Journal journal;
+@EqualsAndHashCode(callSuper = true)
+public class JournalImage extends BaseEntity {
 
 	public Integer index;
+
+	@ManyToOne
+	public Journal journal;
 
 	public String path;
 

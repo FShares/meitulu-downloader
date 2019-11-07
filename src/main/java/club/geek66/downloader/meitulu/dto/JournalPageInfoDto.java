@@ -17,7 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class JournalPageInfoDto {
 
-	private Integer id; // meitulu 写真id
+	private Integer index; // meitulu 写真id
 
 	private String title; // 标题
 
@@ -25,7 +25,7 @@ public class JournalPageInfoDto {
 
 	private String mechanismId; // 机构id
 
-	private String journalNumber; // 期刊编号
+	private String number; // 期刊编号
 
 	private Integer imageCount; // 图片数量
 

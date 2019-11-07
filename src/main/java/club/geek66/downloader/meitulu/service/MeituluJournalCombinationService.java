@@ -33,8 +33,10 @@ public class MeituluJournalCombinationService {
 
 	private final ThreadPoolTaskExecutor taskExecutor;
 
-	public void downloadJournalCombination(String combinationId) {
-		JournalCombinationPageInfoDto combinationInfo = getJournalCombinationInfo(combinationId);
+	public void downloadJournalCombination(String combinationIndex) {
+
+		// 读取信息
+		JournalCombinationPageInfoDto combinationInfo = getJournalCombinationInfo(combinationIndex);
 
 		Integer journalCount = combinationInfo.getJournalCount();
 		Integer journalPageSize = configuration.getMeitulu().getJournalPageSize();
@@ -42,7 +44,7 @@ public class MeituluJournalCombinationService {
 		int totalPage = (int) Math.ceil((double) journalCount / journalPageSize);
 
 		for (int pageNo = 1; pageNo <= totalPage; pageNo++) {
-			Document combinationPage = pageNo != 1 ? pageClient.getCombinationPage(combinationId, pageNo) : pageClient.getCombinationPage(combinationId);
+			Document combinationPage = pageNo != 1 ? pageClient.getCombinationPage(combinationIndex, pageNo) : pageClient.getCombinationPage(combinationIndex);
 			List<JournalPageInfoDto> journalPageInfos = reader.readCombinationPageJournalsInfo(combinationPage);
 			combinationInfo.getJournalPages().put(pageNo, journalPageInfos);
 		}
@@ -56,13 +58,13 @@ public class MeituluJournalCombinationService {
 		journalPages.values().forEach(journals ->
 				journals.forEach(journalPage ->
 						taskExecutor.execute(() ->
-								journalService.downloadJournal(journalPage.getId())
+								journalService.downloadJournal(journalPage.getIndex())
 						)
 				));
 	}
 
-	private JournalCombinationPageInfoDto getJournalCombinationInfo(String combinationId) {
-		Document combinationPage = pageClient.getCombinationPage(combinationId);
+	private JournalCombinationPageInfoDto getJournalCombinationInfo(String combinationIndex) {
+		Document combinationPage = pageClient.getCombinationPage(combinationIndex);
 		return reader.readCombinationPage(combinationPage);
 	}
 

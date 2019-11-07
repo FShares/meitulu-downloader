@@ -22,6 +22,7 @@ public class MeituluJournalServiceTest {
 	@Test
 	public void testDownloadJournal() {
 		service.downloadJournal(18993);
+		service.downloadJournal(17634);
 		// service.downloadJournal(16354);
 	}
 
