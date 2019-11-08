@@ -42,13 +42,14 @@ public class MeituluJournalService {
 
 	private final MeituluPageReader reader;
 
-	public void downloadJournal(Integer journalIndex) {
+	public Journal downloadJournal(Integer journalIndex) {
 		Journal journal = new Journal();
 		JournalPageInfoDto pageInfo = reader.readJournalPage(pageClient.getJournalPage(journalIndex));
 		BeanUtils.copyProperties(pageInfo, journal);
 
 		journal.setImages(generateJournalImage(pageInfo, journal));
 		saveImageToLocal(journal);
+		return null;
 	}
 
 	private void saveImageToLocal(Journal journal) {
@@ -97,6 +98,5 @@ public class MeituluJournalService {
 	private String generateImagePath(Integer journalIndex, Integer imageIndex) {
 		return Path.of(configuration.getHome(), journalIndex.toString(), imageIndex + ".jpg").toString();
 	}
-
 
 }

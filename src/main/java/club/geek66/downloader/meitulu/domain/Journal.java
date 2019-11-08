@@ -6,8 +6,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import java.util.Date;
@@ -26,11 +24,20 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class Journal extends BaseEntity {
 
+	public Journal(Integer index, String title, String number, String resolution, Date publishDate, String additional) {
+		this.index = index;
+		this.title = title;
+		this.number = number;
+		this.resolution = resolution;
+		this.publishDate = publishDate;
+		this.additional = additional;
+	}
+
 	private Integer index; // 索引
 
 	private String title; // 标题
 
-	private Integer number; // 期刊编号
+	private String number; // 期刊编号
 
 	private String resolution; // 分辨率
 
@@ -38,13 +45,13 @@ public class Journal extends BaseEntity {
 
 	private String additional; // 补充说明
 
-	@ManyToMany
-	@JoinTable(name = "journal__journal_combinations",
+	@ManyToMany(mappedBy = "journals")
+	/*@JoinTable(name = "journal__journal_combinations",
 			joinColumns = @JoinColumn(name = "journal_id"),
-			inverseJoinColumns = @JoinColumn(name = "journal_combination_id"))
+			inverseJoinColumns = @JoinColumn(name = "journal_combination_id"))*/
 	private List<JournalCombination> combinations;
 
-	@OneToMany(mappedBy = "journal")
+	@OneToMany(mappedBy = "journal") // mappedBy指定JournalImage中的journal来维护关系, 多的一方维护关系
 	private List<JournalImage> images; // 图片
 
 }

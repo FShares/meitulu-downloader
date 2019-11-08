@@ -27,6 +27,15 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class JournalCombination extends BaseEntity {
 
+	public JournalCombination(String index, String name, CombinationType type, String headImage, String title, String description) {
+		this.index = index;
+		this.name = name;
+		this.type = type;
+		this.headImage = headImage;
+		this.title = title;
+		this.description = description;
+	}
+
 	private String index;
 
 	private String name;
