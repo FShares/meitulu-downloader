@@ -1,19 +1,9 @@
 package club.geek66.downloader.meitulu.repository;
 
-import club.geek66.downloader.meitulu.domain.Journal;
-import club.geek66.downloader.meitulu.domain.JournalCombination;
-import club.geek66.downloader.meitulu.domain.enumeration.CombinationType;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collections;
-import java.util.Date;
 
 /**
  * @author: orange
@@ -26,7 +16,7 @@ import java.util.Date;
 @RunWith(SpringRunner.class)
 public class JournalCombinationRepositoryTest {
 
-	@Autowired
+	/*@Autowired
 	private JournalCombinationRepository combinationRepository;
 
 	@Autowired
@@ -41,6 +31,6 @@ public class JournalCombinationRepositoryTest {
 		combination.setJournals(Collections.singletonList(journal));
 		journalRepository.save(journal);
 		combinationRepository.save(combination);
-	}
+	}*/
 
 }

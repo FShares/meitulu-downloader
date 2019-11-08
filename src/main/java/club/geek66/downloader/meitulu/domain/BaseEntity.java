@@ -1,15 +1,7 @@
 package club.geek66.downloader.meitulu.domain;
 
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
 import java.time.ZonedDateTime;
 
 /**
@@ -19,12 +11,12 @@ import java.time.ZonedDateTime;
  * @copyright: Copyright 2019 by 橙子
  */
 @Data
-@MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
+/*@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)*/
 public abstract class BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	/*@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)*/
 	private Long id;
 
 	/*@CreatedBy
@@ -33,10 +25,10 @@ public abstract class BaseEntity {
 	@LastModifiedBy
 	private Long updatedBy;*/
 
-	@CreatedDate
+	/*@CreatedDate*/
 	private ZonedDateTime createdAt;
 
-	@LastModifiedDate
+	/*@LastModifiedDate*/
 	private ZonedDateTime modifiedAt;
 
 }

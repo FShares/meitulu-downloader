@@ -6,12 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import java.util.List;
 
 /**
@@ -21,7 +15,7 @@ import java.util.List;
  * @copyright: Copyright 2019 by 橙子
  */
 @Data
-@Entity
+/*@Entity*/
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
@@ -40,7 +34,7 @@ public class JournalCombination extends BaseEntity {
 
 	private String name;
 
-	@Enumerated(EnumType.STRING)
+	/*@Enumerated(EnumType.STRING)*/
 	private CombinationType type;
 
 	private String headImage;
@@ -49,10 +43,10 @@ public class JournalCombination extends BaseEntity {
 
 	private String description;
 
-	@ManyToMany
+	/*@ManyToMany
 	@JoinTable(name = "journal__journal_combinations",
 			joinColumns = {@JoinColumn(name = "journal_combination_id")},
-			inverseJoinColumns = {@JoinColumn(name = "journal_id")})
+			inverseJoinColumns = {@JoinColumn(name = "journal_id")})*/
 	private List<Journal> journals;
 
 }

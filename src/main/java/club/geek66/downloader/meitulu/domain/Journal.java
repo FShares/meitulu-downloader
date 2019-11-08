@@ -5,9 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +15,7 @@ import java.util.List;
  * @copyright: Copyright 2019 by orange
  */
 @Data
-@Entity
+/*@Entity*/
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
@@ -45,13 +42,13 @@ public class Journal extends BaseEntity {
 
 	private String additional; // 补充说明
 
-	@ManyToMany(mappedBy = "journals")
+	/*@ManyToMany(mappedBy = "journals")*/
 	/*@JoinTable(name = "journal__journal_combinations",
 			joinColumns = @JoinColumn(name = "journal_id"),
 			inverseJoinColumns = @JoinColumn(name = "journal_combination_id"))*/
 	private List<JournalCombination> combinations;
 
-	@OneToMany(mappedBy = "journal") // mappedBy指定JournalImage中的journal来维护关系, 多的一方维护关系
+	/*@OneToMany(mappedBy = "journal")*/ // mappedBy指定JournalImage中的journal来维护关系, 多的一方维护关系
 	private List<JournalImage> images; // 图片
 
 }

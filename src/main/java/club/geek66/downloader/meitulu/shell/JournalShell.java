@@ -10,11 +10,16 @@ import org.springframework.shell.standard.ShellMethod;
  * @copyright: Copyright 2019 by orange
  */
 @ShellComponent
-public class MyCommand {
+public class JournalShell {
 
-	@ShellMethod("Add two integers together.")
-	public int add(int a, int b) {
-		return a + b;
+	@ShellMethod("Download journal")
+	public String journal(String index) {
+		return "下载" + index;
+	}
+
+	@ShellMethod("Version")
+	public String version() {
+		return "0.01";
 	}
 
 }

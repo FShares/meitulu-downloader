@@ -5,9 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-
 /**
  * @author: orange
  * @date: 19-2-8
@@ -15,7 +12,7 @@ import javax.persistence.ManyToOne;
  * @copyright: Copyright 2019 by orange
  */
 @Data
-@Entity
+/*@Entity*/
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
@@ -23,7 +20,7 @@ public class JournalImage extends BaseEntity {
 
 	public Integer index;
 
-	@ManyToOne
+	/*@ManyToOne*/
 	public Journal journal;
 
 	public String path;
