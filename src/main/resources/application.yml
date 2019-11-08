@@ -1,46 +1,49 @@
 image:
   home: /image/journal/
 
+downloader:
+  version: @project.version@
+
 logging:
   level:
     club.geek66.downloader: warn
 
 
-spring:
-  datasource:
-    url: jdbc:h2:file:~/h2/image;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    platform: h2
-    username: sa
-    password:
-    driverClassName: org.h2.Driver
-    hikari:
-      maximum-pool-size: 32
-
-    jpa:
-      database-platform: org.hibernate.dialect.H2Dialect
-      generate-ddl: true
-      hibernate:
-        ddl-auto: update
-      properties:
-        hibernate:
-          show_sql: false
-          use_sql_comments: true
-          format_sql: true
-
-  h2:
-    console:
-      enabled: true
-      path: /console
-      settings:
-        trace: false
-        web-allow-others: true
-
-  task:
-    execution:
-      pool:
-        core-size: 5
-        max-size: 100
-        queue-capacity: 500
-
-server:
-  port: 8080
+#spring:
+#  datasource:
+#    url: jdbc:h2:file:~/h2/image;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#    platform: h2
+#    username: sa
+#    password:
+#    driverClassName: org.h2.Driver
+#    hikari:
+#      maximum-pool-size: 32
+#
+#    jpa:
+#      database-platform: org.hibernate.dialect.H2Dialect
+#      generate-ddl: true
+#      hibernate:
+#        ddl-auto: update
+#      properties:
+#        hibernate:
+#          show_sql: false
+#          use_sql_comments: true
+#          format_sql: true
+#
+#  h2:
+#    console:
+#      enabled: true
+#      path: /console
+#      settings:
+#        trace: false
+#        web-allow-others: true
+#
+#  task:
+#    execution:
+#      pool:
+#        core-size: 5
+#        max-size: 100
+#        queue-capacity: 500
+#
+#server:
+#  port: 8080
