@@ -1,6 +1,5 @@
 package club.geek66.downloader.meitulu.service;
 
-import club.geek66.downloader.common.configuration.DownloaderConfiguration;
 import club.geek66.downloader.meitulu.dto.JournalCombinationPageInfoDto;
 import club.geek66.downloader.meitulu.dto.JournalPageInfoDto;
 import club.geek66.downloader.meitulu.reader.MeituluPageReader;
@@ -27,8 +26,6 @@ public class MeituluJournalCombinationService {
 
 	private final MeituluPageReader reader;
 
-	private final DownloaderConfiguration configuration;
-
 	private final MeituluJournalService journalService;
 
 	private final ThreadPoolTaskExecutor taskExecutor;
@@ -39,9 +36,8 @@ public class MeituluJournalCombinationService {
 		JournalCombinationPageInfoDto combinationInfo = getJournalCombinationInfo(combinationIndex);
 
 		Integer journalCount = combinationInfo.getJournalCount();
-		Integer journalPageSize = configuration.getMeitulu().getJournalPageSize();
 
-		int totalPage = (int) Math.ceil((double) journalCount / journalPageSize);
+		int totalPage = (int) Math.ceil((double) journalCount / 60);
 
 		for (int pageNo = 1; pageNo <= totalPage; pageNo++) {
 			Document combinationPage = pageNo != 1 ? pageClient.getCombinationPage(combinationIndex, pageNo) : pageClient.getCombinationPage(combinationIndex);

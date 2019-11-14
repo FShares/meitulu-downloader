@@ -12,22 +12,11 @@ import org.springframework.context.annotation.Configuration;
  */
 @Data
 @Configuration
-@ConfigurationProperties("image")
+@ConfigurationProperties("downloader")
 public class DownloaderConfiguration {
 
+	private String version = "0.1";
+
 	private String home = "/home/orange/.cache/journal/";
-
-	private MeituluConfiguration meitulu = new MeituluConfiguration();
-
-	@Data
-	public static class MeituluConfiguration {
-
-		// 每一页的大小
-		private Integer imagePageSize = 4;
-
-		// 每一页的专辑数量
-		private Integer JournalPageSize = 60;
-
-	}
 
 }

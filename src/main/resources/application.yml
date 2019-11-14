@@ -1,13 +1,10 @@
-image:
-  home: /image/journal/
-
-downloader:
-  version: @project.version@
-
 logging:
   level:
     club.geek66.downloader: warn
 
+downloader:
+  version: @project.version@
+  home: /image/journal/
 
 #spring:
 #  datasource:

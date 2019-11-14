@@ -3,7 +3,6 @@ package club.geek66.downloader.meitulu.shell;
 import club.geek66.downloader.common.configuration.DownloaderConfiguration;
 import club.geek66.downloader.meitulu.service.MeituluJournalService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -22,9 +21,6 @@ import java.io.IOException;
 @ShellComponent
 @RequiredArgsConstructor
 public class JournalShell {
-
-	@Value("${downloader.version}")
-	private String version;
 
 	private final MeituluJournalService journalService;
 
@@ -48,9 +44,7 @@ public class JournalShell {
 		File file = new File(home);
 		if (!file.exists()) {
 			try {
-				if (!file.createNewFile()) {
-					return "创建目录失败";
-				}
+				file.createNewFile();
 			} catch (IOException e) {
 				return "创建目录失败:" + e.getMessage();
 			}
@@ -72,7 +66,7 @@ public class JournalShell {
 
 	@ShellMethod("下载器版本")
 	public String version() {
-		return version;
+		return configuration.getVersion();
 	}
 
 }
