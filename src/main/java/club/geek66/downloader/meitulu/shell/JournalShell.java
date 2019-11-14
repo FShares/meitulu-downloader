@@ -1,5 +1,8 @@
 package club.geek66.downloader.meitulu.shell;
 
+import club.geek66.downloader.common.configuration.DownloaderConfiguration;
+import club.geek66.downloader.meitulu.service.MeituluJournalService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
@@ -17,23 +20,27 @@ import java.io.IOException;
  * @copyright: Copyright 2019 by orange
  */
 @ShellComponent
+@RequiredArgsConstructor
 public class JournalShell {
 
 	@Value("${downloader.version}")
 	private String version;
 
-	private String home;
+	private final MeituluJournalService journalService;
+
+	private final DownloaderConfiguration configuration;
 
 	@ShellMethod("Download journal")
 	@ShellMethodAvailability("checkHome")
-	public String journal(@ShellOption({"-i", "--index"}) String index) {
-		return "下载" + index;
+	public String journal(@ShellOption({"-i", "--index"}) Integer index) {
+		journalService.downloadJournal(index);
+		return "下载完成" + index;
 	}
 
 	@ShellMethod("查看下载目录")
 	@ShellMethodAvailability("checkHome")
 	public String home() {
-		return home;
+		return configuration.getHome();
 	}
 
 	@ShellMethod("设置下载目录, 若下载目录不存在将创建")
@@ -55,12 +62,12 @@ public class JournalShell {
 				return "无读权限";
 			}
 		}
-		this.home = home;
+		configuration.setHome(home);
 		return "设置下载目录成功";
 	}
 
 	public Availability checkHome() {
-		return home != null ? Availability.available() : Availability.unavailable("home目录未设置");
+		return configuration.getHome() != null ? Availability.available() : Availability.unavailable("home目录未设置");
 	}
 
 	@ShellMethod("下载器版本")
