@@ -4,15 +4,18 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
+import java.awt.Color;
 
 @SpringBootApplication
 /*@EnableJpaRepositories*/
@@ -29,81 +32,74 @@ public class DownloaderApplication {
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {
-
-			JFrame frame = new JFrame("Main");
-			frame.setSize(250, 250);
-			frame.setLocationRelativeTo(null);
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
 			JProgressBar progressBar = new JProgressBar(0, 100);
 			progressBar.setValue(0);
 			progressBar.setStringPainted(true);
 			JPanel panel = new JPanel();
 			panel.add(progressBar);
 
-
+			JFrame frame = new JFrame("Main");
+			frame.setSize(250, 250);
+			frame.setLocationRelativeTo(null);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setContentPane(panel);
 			frame.setVisible(true);
 
-			new Thread(() -> {
-				for (int i = 0; i < 100; i++) {
-					progressBar.setValue(i);
-
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}).run();
+			JTextField textField = new JTextField();
+			frame.add(textField);
 		});
 	}
 
-	/*public static void main(String[] args) {
-		JFrame jf = new JFrame("测试窗口");
-		jf.setSize(250, 250);
-		jf.setLocationRelativeTo(null);
-		jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+	public static class MainFrame extends JFrame {
 
-		JPanel panel = new JPanel();
+		private JButton btnDownload;
 
-		// 创建一个进度条
-		final JProgressBar progressBar = new JProgressBar();
+		private JProgressBar prgDownload;
 
-		// 设置进度的 最小值 和 最大值
-		progressBar.setMinimum(0);
-		progressBar.setMaximum(100);
+		private JPanel pnlDownload;
 
-		// 设置当前进度值
-		progressBar.setValue(0);
+		public MainFrame() {
+			SwingUtilities.invokeLater(this::init);
+		}
 
-		// 绘制百分比文本（进度条中间显示的百分数）
-		progressBar.setStringPainted(true);
+		private void init() {
+			SwingUtilities.invokeLater(() -> {
+				this.setTitle("Main");
+				this.setVisible(true);
+				this.setSize(1024, 768);
+				this.setLocationRelativeTo(null);
+				this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			});
 
-		// 添加进度改变通知
-		*//*progressBar.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				System.out.println("当前进度值: " + progressBar.getValue() + "; " +
-						"进度百分比: " + progressBar.getPercentComplete());
-			}
-		});*//*
+			SwingUtilities.invokeLater(() -> {
+				this.btnDownload = new JButton();
+				this.btnDownload.setText("点击下载");
+				this.btnDownload.addActionListener(event -> {
+					new Timer(500, e -> {
+						this.prgDownload.setValue(this.prgDownload.getValue() + 1);
+					}).start();
+				});
 
-		// 添加到内容面板
-		panel.add(progressBar);
+				this.prgDownload = new JProgressBar(0, 100);
+				this.prgDownload.setStringPainted(true);
+				this.prgDownload.setVisible(true);
+				this.prgDownload.setBackground(Color.GREEN);
 
-		jf.setContentPane(panel);
-		jf.setVisible(true);
+				this.pnlDownload = new JPanel();
+				this.pnlDownload.setSize(300, 300);
+				this.pnlDownload.add(this.btnDownload);
+				this.pnlDownload.add(this.prgDownload);
 
-		// 模拟延时操作进度, 每隔 0.5 秒更新进度
-		new Timer(500, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				progressBar.setValue(progressBar.getValue() + 1);
-			}
-		}).start();
-	}*/
+				this.add(pnlDownload);
+			});
+
+		}
+
+		public static void main(String[] args) {
+			MainFrame main = new MainFrame();
+		}
+
+	}
 
 	public static class JNumberField extends JTextField {
 
