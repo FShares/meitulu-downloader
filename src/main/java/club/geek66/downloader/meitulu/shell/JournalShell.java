@@ -1,24 +1,12 @@
 package club.geek66.downloader.meitulu.shell;
 
-import club.geek66.downloader.common.configuration.DownloaderConfiguration;
-import club.geek66.downloader.meitulu.service.MeituluJournalService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.shell.Availability;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellMethodAvailability;
-import org.springframework.shell.standard.ShellOption;
-
-import java.io.File;
-import java.io.IOException;
-
 /**
  * @author: orange
  * @date: 19-11-8
  * @time: 下午4:47
  * @copyright: Copyright 2019 by orange
  */
-@ShellComponent
+/*@ShellComponent
 @RequiredArgsConstructor
 public class JournalShell {
 
@@ -69,4 +57,4 @@ public class JournalShell {
 		return configuration.getVersion();
 	}
 
-}
+}*/
