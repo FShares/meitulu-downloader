@@ -1,7 +1,5 @@
-package club.geek66.downloader.meitulu.common;
+package club.geek66.downloader.meitulu.shell;
 
-import club.geek66.downloader.meitulu.service.MeituluJournalService;
-import club.geek66.downloader.meitulu.shell.ShellContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
@@ -17,23 +15,22 @@ import org.springframework.shell.standard.ShellOption;
  */
 @ShellComponent
 @RequiredArgsConstructor
-public class JournalShell {
-
-	private final MeituluJournalService journalService;
+public class DispatcherShell {
 
 	private final ShellContext shellContext;
 
+	private final DispatcherShellService shellService;
+
 	@ShellMethod("Download journal")
 	@ShellMethodAvailability("checkHome")
-	public String journal(@ShellOption({"-i", "--index"}) Integer index) {
-		journalService.downloadJournal(index);
-		return "下载完成" + index;
+	public void downloadJournal(@ShellOption(value = {"-i", "--index"}, help = "索引") Integer index) {
+		shellService.downloadJournal(index);
 	}
 
 	@ShellMethod("查看下载目录")
 	@ShellMethodAvailability("checkHome")
-	public String home() {
-		return shellContext.getHome();
+	public void showHome() {
+		System.out.println(shellContext.getHome());
 	}
 
 	@ShellMethod("设置下载目录, 若下载目录不存在将创建")
@@ -42,13 +39,13 @@ public class JournalShell {
 		return "设置下载目录成功";
 	}
 
-	public Availability checkHome() {
-		return shellContext.checkHome() ? Availability.available() : Availability.unavailable("请给目录合理权限");
-	}
-
 	@ShellMethod("下载器版本")
 	public String version() {
 		return shellContext.getVersion();
+	}
+
+	public Availability checkHome() {
+		return shellContext.checkHome() ? Availability.available() : Availability.unavailable("请给目录合理权限");
 	}
 
 }

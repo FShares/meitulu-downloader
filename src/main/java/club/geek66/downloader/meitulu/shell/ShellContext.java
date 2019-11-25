@@ -18,7 +18,7 @@ import java.nio.file.Path;
  */
 @Component
 @RequiredArgsConstructor
-public class ShellContext {
+public final class ShellContext {
 
 	private final DownloaderConfiguration config;
 
@@ -29,7 +29,7 @@ public class ShellContext {
 		setHome(config.getHome());
 	}
 
-	public void setHome(String home) throws ShellContextException {
+	void setHome(String home) throws ShellContextException {
 		File file = new File(home);
 		if (!file.exists()) {
 			try {
@@ -42,7 +42,7 @@ public class ShellContext {
 		this.home = home;
 	}
 
-	public boolean checkHome() {
+	boolean checkHome() {
 		try {
 			checkPermission(new File(home));
 			return true;
@@ -59,15 +59,15 @@ public class ShellContext {
 		}
 	}
 
-	public String getHome() {
+	String getHome() {
 		return this.home;
 	}
 
-	public String getVersion() {
+	String getVersion() {
 		return config.getVersion();
 	}
 
-	public class ShellContextException extends RuntimeException {
+	private class ShellContextException extends RuntimeException {
 
 		private ShellContextException(String msg) {
 			super(msg);

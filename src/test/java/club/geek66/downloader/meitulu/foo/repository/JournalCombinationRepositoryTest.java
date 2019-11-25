@@ -1,4 +1,4 @@
-package club.geek66.downloader.meitulu.repository;
+package club.geek66.downloader.meitulu.foo.repository;
 
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

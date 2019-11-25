@@ -1,4 +1,4 @@
-package club.geek66.downloader.meitulu.repository;
+package club.geek66.downloader.meitulu.foo.repository;
 
 /**
  * @author: 橙子
