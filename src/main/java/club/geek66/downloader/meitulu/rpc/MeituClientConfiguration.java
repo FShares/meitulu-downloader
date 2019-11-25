@@ -1,4 +1,4 @@
-package club.geek66.downloader.meitulu;
+package club.geek66.downloader.meitulu.rpc;
 
 import club.geek66.downloader.meitulu.rpc.MeituluImageClient;
 import club.geek66.downloader.meitulu.rpc.MeituluPageClient;

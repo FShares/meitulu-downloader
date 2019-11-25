@@ -1,4 +1,4 @@
-package club.geek66.downloader.common;
+package club.geek66.downloader.meitulu.foo;
 
 import org.apache.commons.lang.StringUtils;
 

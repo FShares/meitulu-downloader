@@ -1,6 +1,6 @@
 package club.geek66.downloader.meitulu.service;
 
-import club.geek66.downloader.common.configuration.DownloaderConfiguration;
+import club.geek66.downloader.meitulu.common.configuration.DownloaderConfiguration;
 import club.geek66.downloader.meitulu.domain.Journal;
 import club.geek66.downloader.meitulu.domain.JournalImage;
 import club.geek66.downloader.meitulu.dto.JournalPageInfoDto;

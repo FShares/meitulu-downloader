@@ -1,10 +1,23 @@
 logging:
   level:
-    club.geek66.downloader: warn
+    club:
+      geek66:
+        downloader: warn
+    com:
+      netflix: error
+    org:
+      jline: error
+      springframework: error
 
 downloader:
   version: @project.version@
-  home: /image/journal/
+  home: /home/orange/.journal/images
+
+spring:
+  application:
+    name: downloader
+  main:
+    banner-mode: "OFF"
 
 #spring:
 #  datasource:

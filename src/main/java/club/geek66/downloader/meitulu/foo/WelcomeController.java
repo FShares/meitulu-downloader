@@ -1,4 +1,4 @@
-package club.geek66.downloader.web.controller;
+package club.geek66.downloader.meitulu.foo;
 
 /**
  * @author: 橙子
