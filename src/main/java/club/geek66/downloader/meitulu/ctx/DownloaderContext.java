@@ -1,4 +1,4 @@
-package club.geek66.downloader.meitulu.shell;
+package club.geek66.downloader.meitulu.ctx;
 
 import club.geek66.downloader.meitulu.common.configuration.DownloaderConfiguration;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.nio.file.Path;
  */
 @Component
 @RequiredArgsConstructor
-public final class ShellContext {
+public final class DownloaderContext {
 
 	private final DownloaderConfiguration config;
 
@@ -29,7 +29,7 @@ public final class ShellContext {
 		setHome(config.getHome());
 	}
 
-	void setHome(String home) throws ShellContextException {
+	public void setHome(String home) throws ShellContextException {
 		File file = new File(home);
 		if (!file.exists()) {
 			try {
@@ -42,7 +42,7 @@ public final class ShellContext {
 		this.home = home;
 	}
 
-	boolean checkHome() {
+	public boolean checkHome() {
 		try {
 			checkPermission(new File(home));
 			return true;
@@ -59,11 +59,11 @@ public final class ShellContext {
 		}
 	}
 
-	String getHome() {
+	public String getHome() {
 		return this.home;
 	}
 
-	String getVersion() {
+	public String getVersion() {
 		return config.getVersion();
 	}
 

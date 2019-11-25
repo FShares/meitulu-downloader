@@ -1,5 +1,6 @@
 package club.geek66.downloader.meitulu.shell;
 
+import club.geek66.downloader.meitulu.ctx.DownloaderContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
@@ -17,7 +18,7 @@ import org.springframework.shell.standard.ShellOption;
 @RequiredArgsConstructor
 public class DispatcherShell {
 
-	private final ShellContext shellContext;
+	private final DownloaderContext context;
 
 	private final DispatcherShellService shellService;
 
@@ -30,22 +31,22 @@ public class DispatcherShell {
 	@ShellMethod("查看下载目录")
 	@ShellMethodAvailability("checkHome")
 	public void showHome() {
-		System.out.println(shellContext.getHome());
+		System.out.println(context.getHome());
 	}
 
 	@ShellMethod("设置下载目录, 若下载目录不存在将创建")
 	public String setHome(String home) {
-		shellContext.setHome(home);
+		context.setHome(home);
 		return "设置下载目录成功";
 	}
 
 	@ShellMethod("下载器版本")
 	public String version() {
-		return shellContext.getVersion();
+		return context.getVersion();
 	}
 
 	public Availability checkHome() {
-		return shellContext.checkHome() ? Availability.available() : Availability.unavailable("请给目录合理权限");
+		return context.checkHome() ? Availability.available() : Availability.unavailable("请给目录合理权限");
 	}
 
 }

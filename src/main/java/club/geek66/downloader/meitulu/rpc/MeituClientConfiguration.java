@@ -1,7 +1,6 @@
 package club.geek66.downloader.meitulu.rpc;
 
-import club.geek66.downloader.meitulu.rpc.MeituluImageClient;
-import club.geek66.downloader.meitulu.rpc.MeituluPageClient;
+import club.geek66.downloader.meitulu.common.configuration.DownloaderConfiguration;
 import feign.Contract;
 import feign.Feign;
 import feign.FeignException;
@@ -10,6 +9,7 @@ import feign.RetryableException;
 import feign.Retryer;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FeignClientsConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -25,8 +25,11 @@ import org.springframework.context.annotation.Import;
  */
 @Slf4j
 @Configuration
+@RequiredArgsConstructor
 @Import(FeignClientsConfiguration.class)
 public class MeituClientConfiguration {
+
+	private final DownloaderConfiguration configuration;
 
 	@Bean
 	public RequestInterceptor requestInterceptor() {
@@ -63,7 +66,7 @@ public class MeituClientConfiguration {
 				.decoder(decoder)
 				.contract(contract)
 				.requestInterceptor(requestInterceptor())
-				.target(MeituluPageClient.class, "https://www.meitulu.com");
+				.target(MeituluPageClient.class, configuration.getPageHost());
 	}
 
 	@Bean
@@ -74,7 +77,7 @@ public class MeituClientConfiguration {
 				.contract(contract)
 				.requestInterceptor(requestInterceptor())
 				.retryer(customRetryer())
-				.target(MeituluImageClient.class, "https://mtl.xtpxw.com");
+				.target(MeituluImageClient.class, configuration.getImageHost());
 	}
 
 }

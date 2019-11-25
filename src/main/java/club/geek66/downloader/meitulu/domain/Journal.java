@@ -46,9 +46,11 @@ public class Journal extends BaseEntity {
 	/*@JoinTable(name = "journal__journal_combinations",
 			joinColumns = @JoinColumn(name = "journal_id"),
 			inverseJoinColumns = @JoinColumn(name = "journal_combination_id"))*/
+	@EqualsAndHashCode.Exclude
 	private List<JournalCombination> combinations;
 
 	/*@OneToMany(mappedBy = "journal")*/ // mappedBy指定JournalImage中的journal来维护关系, 多的一方维护关系
+	@EqualsAndHashCode.Exclude
 	private List<JournalImage> images; // 图片
 
 }

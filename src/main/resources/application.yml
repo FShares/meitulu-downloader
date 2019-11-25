@@ -12,6 +12,7 @@ logging:
 downloader:
   version: @project.version@
   home: /home/orange/.journal/images
+  image-host: "https://mtl.gzhuibei.com"
 
 spring:
   application:

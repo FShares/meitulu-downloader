@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author: 橙子
@@ -38,5 +39,7 @@ public class JournalPageInfoDto {
 	private Date publishDate; // 发行时间
 
 	private String additional; // 补充说明
+
+	private List<JournalImageDto> images;
 
 }

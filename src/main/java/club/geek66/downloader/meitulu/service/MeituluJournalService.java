@@ -1,16 +1,14 @@
 package club.geek66.downloader.meitulu.service;
 
-import club.geek66.downloader.meitulu.common.configuration.DownloaderConfiguration;
-import club.geek66.downloader.meitulu.domain.Journal;
-import club.geek66.downloader.meitulu.domain.JournalImage;
+import club.geek66.downloader.meitulu.ctx.DownloaderContext;
+import club.geek66.downloader.meitulu.dto.JournalImageDto;
 import club.geek66.downloader.meitulu.dto.JournalPageInfoDto;
 import club.geek66.downloader.meitulu.reader.MeituluPageReader;
-import club.geek66.downloader.meitulu.rpc.MeituluImageClient;
-import club.geek66.downloader.meitulu.rpc.MeituluPageClient;
+import club.geek66.downloader.meitulu.rpc.MeituluClient;
+import club.geek66.downloader.meitulu.shell.TerminalHelper;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author: 橙子
@@ -34,69 +33,83 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MeituluJournalService {
 
-	private final MeituluPageClient pageClient;
+	private final MeituluClient client;
 
-	private final MeituluImageClient imageClient;
-
-	private final DownloaderConfiguration configuration;
+	private final DownloaderContext context;
 
 	private final MeituluPageReader reader;
 
-	public Journal downloadJournal(Integer journalIndex) {
-		Journal journal = new Journal();
-		JournalPageInfoDto pageInfo = reader.readJournalPage(pageClient.getJournalPage(journalIndex));
-		BeanUtils.copyProperties(pageInfo, journal);
+	private final TerminalHelper helper;
 
-		journal.setImages(generateJournalImage(pageInfo, journal));
-		saveImageToLocal(journal);
-		return null;
+	private void startReadPage(Integer journalIndex) {
+		helper.println("read Journal with index" + journalIndex);
 	}
 
-	private void saveImageToLocal(Journal journal) {
-		List<JournalImage> images = journal.getImages();
+	private void finishReadPage(JournalPageInfoDto pageInfo) {
+		helper.println("Read Journal with index " + pageInfo.getIndex() + " has finished");
+		helper.println("Journal has " + pageInfo.getImageCount() + " images");
+		helper.println("Journal model Name is " + pageInfo.getModelName());
+		helper.println("Journal title is " + pageInfo.getTitle());
+		helper.println("Journal additional is " + pageInfo.getAdditional());
+	}
+
+	private void startDownloadImage(JournalImageDto image) {
+		helper.println("The journal is " + image.getPageInfo().getIndex() + ", And the image index with " + image.getPageInfo().getIndex() + "start download");
+	}
+
+	private void finishDownloadImage(JournalImageDto image) {
+		helper.println("The journal is " + image.getPageInfo().getIndex() + ", And the image index with " + image.getPageInfo().getIndex() + " is downloaded");
+	}
+
+	public void downloadJournal(Integer journalIndex) {
+
+		startReadPage(journalIndex);
+		JournalPageInfoDto pageInfo = reader.readJournalPage(journalIndex);
+		finishReadPage(pageInfo);
+
+		List<JournalImageDto> images = new ArrayList<>();
+		for (int i = 1; i <= pageInfo.getImageCount(); i++) {
+			String path = Path.of(context.getHome(), pageInfo.getIndex().toString(), i + ".jpg").toString();
+			JournalImageDto image = new JournalImageDto(i, path, 0, pageInfo);
+			images.add(image);
+		}
+		pageInfo.setImages(images);
+
+		saveImageToLocal(pageInfo);
+	}
+
+	private void saveImageToLocal(JournalPageInfoDto pageInfo) {
+		List<JournalImageDto> images = pageInfo.getImages();
 		images.parallelStream().forEach(this::doSave);
 	}
 
-	private void doSave(JournalImage image) {
-		Journal journal = image.getJournal();
+	private void doSave(JournalImageDto image) {
+		JournalPageInfoDto journal = image.getPageInfo();
 		File self = Path.of(image.getPath()).toFile();
 		File parent = self.getParentFile();
 		if (!parent.exists()) {
 			parent.mkdirs();
-		} else {
-			if (self.exists()) {
-				ResponseEntity<Object> modelImageInfo = imageClient.getModelImageInfo(journal.getIndex(), image.getIndex());
-				long contentLength = modelImageInfo.getHeaders().getContentLength();
-				long fileLength = self.length();
-				if (contentLength == fileLength) {
-					log.info("image exist! journal index {}, image index {}", journal.getIndex(), image.getIndex());
-					return;
-				}
+		}
+		if (self.exists()) {
+			ResponseEntity<Object> modelImageInfo = client.getModelImageInfo(journal.getIndex(), image.getIndex());
+			long contentLength = modelImageInfo.getHeaders().getContentLength();
+			long fileLength = self.length();
+			if (contentLength == fileLength) {
+				log.info("image exist! journal index {}, image index {}", journal.getIndex(), image.getIndex());
+				return;
 			}
 		}
 
-
 		try {
-			ResponseEntity<Resource> modelImage = imageClient.getModelImage(journal.getIndex(), image.getIndex());
-			FileCopyUtils.copy(modelImage.getBody().getInputStream(), new FileOutputStream(self));
+			startDownloadImage(image);
+			ResponseEntity<Resource> modelImage = client.getModelImage(journal.getIndex(), image.getIndex());
+			FileCopyUtils.copy(Objects.requireNonNull(modelImage.getBody()).getInputStream(), new FileOutputStream(self));
+			finishDownloadImage(image);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (FeignException.NotFound notFound) {
 			log.warn("image not found! journal index {}, image index {}", journal.getIndex(), image.getIndex());
 		}
-	}
-
-	private List<JournalImage> generateJournalImage(JournalPageInfoDto pageInfoDto, Journal journal) {
-		List<JournalImage> images = new ArrayList<>();
-		for (int i = 1; i <= pageInfoDto.getImageCount(); i++) {
-			JournalImage image = new JournalImage(i, journal, generateImagePath(pageInfoDto.getIndex(), i), 0);
-			images.add(image);
-		}
-		return images;
-	}
-
-	private String generateImagePath(Integer journalIndex, Integer imageIndex) {
-		return Path.of(configuration.getHome(), journalIndex.toString(), imageIndex + ".jpg").toString();
 	}
 
 }

@@ -19,4 +19,8 @@ public class DownloaderConfiguration {
 
 	private String home = "/home/orange/.cache/journal/";
 
+	private String imageHost = "https://mtl.xtpxw.com";
+
+	private String pageHost = "https://www.meitulu.com";
+
 }

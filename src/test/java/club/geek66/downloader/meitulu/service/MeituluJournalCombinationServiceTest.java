@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -20,9 +19,6 @@ public class MeituluJournalCombinationServiceTest {
 	@Autowired
 	private MeituluJournalCombinationService service;
 
-	@Autowired
-	private ThreadPoolTaskExecutor taskExecutor;
-
 	@Test
 	public void downloadJournalCombination() {
 		// service.downloadJournalCombination("1148");
@@ -31,8 +27,5 @@ public class MeituluJournalCombinationServiceTest {
 		// service.downloadJournalCombination("1165");
 		service.downloadJournalCombination("1214");
 		// service.downloadJournalCombination("sugar-xiaotianxincc");
-		while (taskExecutor.getActiveCount() != 0) {
-
-		}
 	}
 }

@@ -2,6 +2,8 @@ package club.geek66.downloader.meitulu.reader;
 
 import club.geek66.downloader.meitulu.dto.JournalCombinationPageInfoDto;
 import club.geek66.downloader.meitulu.dto.JournalPageInfoDto;
+import club.geek66.downloader.meitulu.rpc.MeituluClient;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.jsoup.nodes.Document;
@@ -25,7 +27,10 @@ import java.util.Optional;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class MeituluPageReader {
+
+	private final MeituluClient client;
 
 	// 日期解析器
 	private static final Collection<SimpleDateFormat> SUPPORTED_DATE_FORMATS = Arrays.asList(
@@ -41,10 +46,12 @@ public class MeituluPageReader {
 	/**
 	 * 读取写真详情页面内信息
 	 *
-	 * @param journalPageDoc html文档
+	 * @param journalIndex 索引
 	 * @return 写真页面的信息
 	 */
-	public JournalPageInfoDto readJournalPage(Document journalPageDoc) {
+	public JournalPageInfoDto readJournalPage(Integer journalIndex) {
+		Document journalPageDoc = client.getJournalPage(journalIndex);
+
 		JournalPageInfoDto pageInfo = new JournalPageInfoDto();
 
 		// 写真 index
@@ -131,10 +138,12 @@ public class MeituluPageReader {
 	/**
 	 * 读取写真集合页面的具体信息
 	 *
-	 * @param combinationPageDoc 写真集合页面的html文档
+	 * @param combinationIndex 写真集合页面的索引
 	 * @return 详细信息
 	 */
-	public JournalCombinationPageInfoDto readCombinationPage(Document combinationPageDoc) {
+	public JournalCombinationPageInfoDto readCombinationPage(String combinationIndex) {
+		Document combinationPageDoc = client.getCombinationPage(combinationIndex);
+
 		JournalCombinationPageInfoDto pageInfo = new JournalCombinationPageInfoDto();
 
 		Optional.of(combinationPageDoc.select("link[rel=\"alternate\"]"))

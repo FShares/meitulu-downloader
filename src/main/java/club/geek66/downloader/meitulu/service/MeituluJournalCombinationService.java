@@ -60,8 +60,7 @@ public class MeituluJournalCombinationService {
 	}
 
 	private JournalCombinationPageInfoDto getJournalCombinationInfo(String combinationIndex) {
-		Document combinationPage = pageClient.getCombinationPage(combinationIndex);
-		return reader.readCombinationPage(combinationPage);
+		return reader.readCombinationPage(combinationIndex);
 	}
 
 }

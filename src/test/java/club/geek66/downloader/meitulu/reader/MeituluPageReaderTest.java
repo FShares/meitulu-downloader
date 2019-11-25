@@ -2,7 +2,7 @@ package club.geek66.downloader.meitulu.reader;
 
 import club.geek66.downloader.meitulu.dto.JournalCombinationPageInfoDto;
 import club.geek66.downloader.meitulu.dto.JournalPageInfoDto;
-import club.geek66.downloader.meitulu.rpc.MeituluPageClient;
+import club.geek66.downloader.meitulu.rpc.MeituluClient;
 import org.jsoup.nodes.Document;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,17 +25,17 @@ import java.util.List;
 public class MeituluPageReaderTest {
 
 	@Autowired
-	private MeituluPageReader reader;
+	private MeituluClient client;
 
 	@Autowired
-	private MeituluPageClient pageClient;
+	private MeituluPageReader reader;
 
 	@Test
 	public void testReadJournalPage() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
 
-		Document imagePage = pageClient.getJournalPage(19028);
-		JournalPageInfoDto pageInfo = reader.readJournalPage(imagePage);
+		Document imagePage = client.getJournalPage(19028);
+		JournalPageInfoDto pageInfo = reader.readJournalPage(19028);
 
 		Assert.assertEquals((long) pageInfo.getIndex(), 19028L);
 
@@ -57,8 +57,8 @@ public class MeituluPageReaderTest {
 
 	@Test
 	public void testReadCombinationPage() {
-		Document combinationPage = pageClient.getCombinationPage("1225");
-		JournalCombinationPageInfoDto pageInfo = reader.readCombinationPage(combinationPage);
+		Document combinationPage = client.getCombinationPage("1225");
+		JournalCombinationPageInfoDto pageInfo = reader.readCombinationPage("1225");
 
 		Assert.assertEquals(pageInfo.getIndex(), "1225");
 		Assert.assertEquals(pageInfo.getTitle(), "李可可_李可儿写真图片_高清秀人李可可写真套图");
@@ -68,7 +68,7 @@ public class MeituluPageReaderTest {
 
 	@Test
 	public void testReadCombinationPageJournalsInfo() {
-		Document combinationPage = pageClient.getCombinationPage("1214");
+		Document combinationPage = client.getCombinationPage("1214");
 
 		List<JournalPageInfoDto> journalPageInfos = reader.readCombinationPageJournalsInfo(combinationPage);
 		Assert.assertEquals((long) journalPageInfos.size(), 60L);

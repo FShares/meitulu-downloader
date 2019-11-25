@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 public class DownloaderApplication {
 
 	public static void main(String[] args) {
-		new SpringApplication(DownloaderApplication.class).run(args);
+		SpringApplication.run(DownloaderApplication.class, args);
 	}
 
 }
