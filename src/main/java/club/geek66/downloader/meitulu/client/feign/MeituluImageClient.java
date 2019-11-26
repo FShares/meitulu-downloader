@@ -1,4 +1,4 @@
-package club.geek66.downloader.meitulu.client;
+package club.geek66.downloader.meitulu.client.feign;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @time: 20:44
  * @copyright: Copyright 2019 by 橙子
  */
-interface MeituluImageClient {
+public interface MeituluImageClient {
 
 	@GetMapping("/images/img/{journalIndex}/{imageIndex}.jpg")
 	ResponseEntity<Resource> getModelImage(@PathVariable Integer journalIndex, @PathVariable Integer imageIndex);

@@ -1,6 +1,6 @@
-package club.geek66.downloader.meitulu.client;
+package club.geek66.downloader.meitulu.client.feign;
 
-import club.geek66.downloader.meitulu.common.configuration.DownloaderConfiguration;
+import club.geek66.downloader.meitulu.configuration.DownloaderConfiguration;
 import feign.Contract;
 import feign.Feign;
 import feign.FeignException;
@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @RequiredArgsConstructor
 @Import(FeignClientsConfiguration.class)
-public class MeituClientConfiguration {
+public class MeituFeignConfiguration {
 
 	private final DownloaderConfiguration configuration;
 
@@ -66,6 +66,7 @@ public class MeituClientConfiguration {
 				.decoder(decoder)
 				.contract(contract)
 				.requestInterceptor(requestInterceptor())
+				.retryer(customRetryer())
 				.target(MeituluPageClient.class, configuration.getPageHost());
 	}
 

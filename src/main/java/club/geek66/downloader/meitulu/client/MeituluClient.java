@@ -1,10 +1,17 @@
 package club.geek66.downloader.meitulu.client;
 
+import club.geek66.downloader.meitulu.client.feign.MeituluImageClient;
+import club.geek66.downloader.meitulu.client.feign.MeituluPageClient;
+import club.geek66.downloader.meitulu.client.reader.MeituluPageReader;
+import club.geek66.downloader.meitulu.client.dto.JournalCombinationPageInfoDto;
+import club.geek66.downloader.meitulu.client.dto.JournalPageInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.nodes.Document;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author: orange
@@ -20,32 +27,35 @@ public class MeituluClient {
 
 	private final MeituluImageClient imageClient;
 
-	public Document getJournalPage(Integer journalIndex) {
-		return pageClient.getJournalPage(journalIndex);
+	private final MeituluPageReader reader;
+
+	public JournalPageInfoDto getJournalPage(Integer journalIndex) {
+		Document journalPage = pageClient.getJournalPage(journalIndex);
+		return reader.readJournalPage(journalPage);
 	}
 
-	public Document getJournalPage(Integer journalIndex, Integer pageNo) {
-		return pageClient.getJournalPage(journalIndex, pageNo);
+	public JournalCombinationPageInfoDto getCombinationPage(String combinationIndex) {
+		Document combinationPage = pageClient.getCombinationPage(combinationIndex);
+		return reader.readCombinationPage(combinationPage);
 	}
 
-	public Document getCombinationPage(String combinationIndex) {
-		return pageClient.getCombinationPage(combinationIndex);
+	public List<JournalPageInfoDto> getCombinationPageJournals(String combinationIndex, Integer pageNo) {
+		Document combinationPage;
+		if (pageNo != 1) {
+			combinationPage = pageClient.getCombinationPage(combinationIndex, pageNo);
+		} else {
+			combinationPage = pageClient.getCombinationPage(combinationIndex);
+		}
+		return reader.readCombinationPageJournalsInfo(combinationPage);
 	}
 
-	public Document getCombinationPage(String combinationIndex, Integer pageNo) {
-		return pageClient.getCombinationPage(combinationIndex, pageNo);
+	public Long getLengthOfModelImage(Integer journalIndex, Integer imageIndex) {
+		ResponseEntity<Object> modelImageInfo = imageClient.getModelImageInfo(journalIndex, imageIndex);
+		return modelImageInfo.getHeaders().getContentLength();
 	}
 
-	public Document getSearchPage(String keyword) {
-		return pageClient.getSearchPage(keyword);
-	}
-
-	public ResponseEntity<Resource> getModelImage(Integer journalIndex, Integer imageIndex) {
-		return imageClient.getModelImage(journalIndex, imageIndex);
-	}
-
-	public ResponseEntity<Object> getModelImageInfo(Integer journalIndex, Integer imageIndex) {
-		return imageClient.getModelImageInfo(journalIndex, imageIndex);
+	public Resource getModelImage(Integer journalIndex, Integer imageIndex) {
+		return imageClient.getModelImage(journalIndex, imageIndex).getBody();
 	}
 
 }

@@ -1,6 +1,6 @@
 package club.geek66.downloader.meitulu.ctx;
 
-import club.geek66.downloader.meitulu.common.configuration.DownloaderConfiguration;
+import club.geek66.downloader.meitulu.configuration.DownloaderConfiguration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

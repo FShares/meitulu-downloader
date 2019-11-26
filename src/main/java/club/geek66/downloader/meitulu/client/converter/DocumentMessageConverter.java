@@ -1,4 +1,4 @@
-package club.geek66.downloader.meitulu.common.converter;
+package club.geek66.downloader.meitulu.client.converter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

@@ -2,15 +2,13 @@ package club.geek66.downloader.meitulu.service;
 
 import club.geek66.downloader.meitulu.client.MeituluClient;
 import club.geek66.downloader.meitulu.ctx.DownloaderContext;
-import club.geek66.downloader.meitulu.dto.JournalImageDto;
-import club.geek66.downloader.meitulu.dto.JournalPageInfoDto;
-import club.geek66.downloader.meitulu.reader.MeituluPageReader;
+import club.geek66.downloader.meitulu.client.dto.JournalImageDto;
+import club.geek66.downloader.meitulu.client.dto.JournalPageInfoDto;
 import club.geek66.downloader.meitulu.shell.DisplayService;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
@@ -36,8 +34,6 @@ public class MeituluJournalService {
 
 	private final DownloaderContext context;
 
-	private final MeituluPageReader reader;
-
 	private final DisplayService helper;
 
 	private void startReadPage(Integer journalIndex) {
@@ -62,7 +58,7 @@ public class MeituluJournalService {
 
 	public void downloadJournal(Integer journalIndex) {
 		startReadPage(journalIndex);
-		JournalPageInfoDto pageInfo = reader.readJournalPage(journalIndex);
+		JournalPageInfoDto pageInfo = client.getJournalPage(journalIndex);
 		finishReadPage(pageInfo);
 
 		downloadImage(pageInfo);
@@ -92,8 +88,7 @@ public class MeituluJournalService {
 		File imageFile = imagePath.toFile();
 
 		if (imageFile.exists()) {
-			ResponseEntity<Object> modelImageInfo = client.getModelImageInfo(pageInfo.getIndex(), image.getIndex());
-			long contentLength = modelImageInfo.getHeaders().getContentLength();
+			long contentLength = client.getLengthOfModelImage(pageInfo.getIndex(), image.getIndex());
 			long fileLength = imageFile.length();
 			if (contentLength == fileLength) {
 				log.info("Image exist! journal index {}, image index {}", pageInfo.getIndex(), image.getIndex());
@@ -103,8 +98,8 @@ public class MeituluJournalService {
 
 		try {
 			startDownloadImage(image);
-			ResponseEntity<Resource> modelImage = client.getModelImage(pageInfo.getIndex(), image.getIndex());
-			FileCopyUtils.copy(Objects.requireNonNull(modelImage.getBody()).getInputStream(), new FileOutputStream(imageFile));
+			Resource modelImage = client.getModelImage(pageInfo.getIndex(), image.getIndex());
+			FileCopyUtils.copy(Objects.requireNonNull(modelImage).getInputStream(), new FileOutputStream(imageFile));
 			finishDownloadImage(image);
 		} catch (IOException e) {
 			e.printStackTrace();

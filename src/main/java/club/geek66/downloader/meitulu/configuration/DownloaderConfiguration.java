@@ -1,4 +1,4 @@
-package club.geek66.downloader.meitulu.common.configuration;
+package club.geek66.downloader.meitulu.configuration;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

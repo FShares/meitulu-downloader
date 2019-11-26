@@ -3,7 +3,10 @@ package club.geek66.downloader.meitulu.service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.shell.jline.JLineShellAutoConfiguration;
+import org.springframework.shell.standard.commands.StandardCommandsAutoConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -14,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@EnableAutoConfiguration(exclude = {JLineShellAutoConfiguration.class, StandardCommandsAutoConfiguration.class})
 public class MeituluJournalServiceTest {
 
 	@Autowired
@@ -23,7 +27,7 @@ public class MeituluJournalServiceTest {
 	public void testDownloadJournal() {
 		service.downloadJournal(18993);
 		service.downloadJournal(17634);
-		// service.downloadJournal(16354);
+		service.downloadJournal(16354);
 	}
 
 }

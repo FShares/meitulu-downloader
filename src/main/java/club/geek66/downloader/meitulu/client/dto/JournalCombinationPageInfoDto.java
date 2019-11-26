@@ -1,4 +1,4 @@
-package club.geek66.downloader.meitulu.dto;
+package club.geek66.downloader.meitulu.client.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

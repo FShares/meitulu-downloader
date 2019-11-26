@@ -1,4 +1,4 @@
-package club.geek66.downloader.meitulu.reader;
+package club.geek66.downloader.meitulu.client.reader;
 
 /**
  * @author: 橙子

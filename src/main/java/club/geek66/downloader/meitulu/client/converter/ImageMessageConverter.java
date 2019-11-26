@@ -1,4 +1,4 @@
-package club.geek66.downloader.meitulu.common.converter;
+package club.geek66.downloader.meitulu.client.converter;
 
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;

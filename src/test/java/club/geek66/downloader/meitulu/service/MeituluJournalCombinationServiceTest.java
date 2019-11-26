@@ -25,7 +25,8 @@ public class MeituluJournalCombinationServiceTest {
 		// service.downloadJournalCombination("yuji-una");
 		// service.downloadJournalCombination("wangyuchun");
 		// service.downloadJournalCombination("1165");
-		service.downloadJournalCombination("1214");
+		// service.downloadJournalCombination("1214");
 		// service.downloadJournalCombination("sugar-xiaotianxincc");
+		// service.downloadJournalCombination("sabrina");
 	}
 }

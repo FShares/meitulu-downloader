@@ -1,9 +1,8 @@
-package club.geek66.downloader.meitulu.reader;
+package club.geek66.downloader.meitulu.client.reader;
 
-import club.geek66.downloader.meitulu.client.MeituluClient;
-import club.geek66.downloader.meitulu.dto.JournalCombinationPageInfoDto;
-import club.geek66.downloader.meitulu.dto.JournalImageDto;
-import club.geek66.downloader.meitulu.dto.JournalPageInfoDto;
+import club.geek66.downloader.meitulu.client.dto.JournalCombinationPageInfoDto;
+import club.geek66.downloader.meitulu.client.dto.JournalImageDto;
+import club.geek66.downloader.meitulu.client.dto.JournalPageInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -31,8 +30,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MeituluPageReader {
 
-	private final MeituluClient client;
-
 	// 日期解析器
 	private static final Collection<SimpleDateFormat> SUPPORTED_DATE_FORMATS = Arrays.asList(
 			new SimpleDateFormat("yyyy.MM.dd"),
@@ -47,12 +44,10 @@ public class MeituluPageReader {
 	/**
 	 * 读取写真详情页面内信息
 	 *
-	 * @param journalIndex 索引
+	 * @param journalPageDoc 索引对应的文档
 	 * @return 写真页面的信息
 	 */
-	public JournalPageInfoDto readJournalPage(Integer journalIndex) {
-		Document journalPageDoc = client.getJournalPage(journalIndex);
-
+	public JournalPageInfoDto readJournalPage(Document journalPageDoc) {
 		JournalPageInfoDto pageInfo = new JournalPageInfoDto();
 
 		// 写真 index
@@ -151,12 +146,10 @@ public class MeituluPageReader {
 	/**
 	 * 读取写真集合页面的具体信息
 	 *
-	 * @param combinationIndex 写真集合页面的索引
+	 * @param combinationPageDoc 写真集合页面
 	 * @return 详细信息
 	 */
-	public JournalCombinationPageInfoDto readCombinationPage(String combinationIndex) {
-		Document combinationPageDoc = client.getCombinationPage(combinationIndex);
-
+	public JournalCombinationPageInfoDto readCombinationPage(Document combinationPageDoc) {
 		JournalCombinationPageInfoDto pageInfo = new JournalCombinationPageInfoDto();
 
 		Optional.of(combinationPageDoc.select("link[rel=\"alternate\"]"))

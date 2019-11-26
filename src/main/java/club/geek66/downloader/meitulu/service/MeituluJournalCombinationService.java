@@ -1,11 +1,9 @@
 package club.geek66.downloader.meitulu.service;
 
-import club.geek66.downloader.meitulu.client.rpc.MeituluPageClient;
-import club.geek66.downloader.meitulu.dto.JournalCombinationPageInfoDto;
-import club.geek66.downloader.meitulu.dto.JournalPageInfoDto;
-import club.geek66.downloader.meitulu.reader.MeituluPageReader;
+import club.geek66.downloader.meitulu.client.MeituluClient;
+import club.geek66.downloader.meitulu.client.dto.JournalCombinationPageInfoDto;
+import club.geek66.downloader.meitulu.client.dto.JournalPageInfoDto;
 import lombok.RequiredArgsConstructor;
-import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,27 +19,24 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MeituluJournalCombinationService {
 
-	private final MeituluPageClient pageClient;
-
-	private final MeituluPageReader reader;
+	private final MeituluClient client;
 
 	private final MeituluJournalService journalService;
 
 	public void downloadJournalCombination(String combinationIndex) {
 
 		// 读取信息
-		JournalCombinationPageInfoDto combinationInfo = getJournalCombinationInfo(combinationIndex);
+		JournalCombinationPageInfoDto combinationPage = client.getCombinationPage(combinationIndex);
 
-		Integer journalCount = combinationInfo.getJournalCount();
+		Integer journalCount = combinationPage.getJournalCount();
 
 		int totalPage = (int) Math.ceil((double) journalCount / 60);
 
 		for (int pageNo = 1; pageNo <= totalPage; pageNo++) {
-			Document combinationPage = pageNo != 1 ? pageClient.getCombinationPage(combinationIndex, pageNo) : pageClient.getCombinationPage(combinationIndex);
-			List<JournalPageInfoDto> journalPageInfos = reader.readCombinationPageJournalsInfo(combinationPage);
-			combinationInfo.getJournalPages().put(pageNo, journalPageInfos);
+			List<JournalPageInfoDto> journalPageInfos = client.getCombinationPageJournals(combinationIndex, pageNo);
+			combinationPage.getJournalPages().put(pageNo, journalPageInfos);
 		}
-		saveJournalCombination(combinationInfo);
+		saveJournalCombination(combinationPage);
 	}
 
 	private void saveJournalCombination(JournalCombinationPageInfoDto combinationInfo) {
@@ -51,10 +46,6 @@ public class MeituluJournalCombinationService {
 				journals.forEach(journalPage ->
 						journalService.downloadJournal(journalPage.getIndex())
 				));
-	}
-
-	private JournalCombinationPageInfoDto getJournalCombinationInfo(String combinationIndex) {
-		return reader.readCombinationPage(combinationIndex);
 	}
 
 }
