@@ -22,6 +22,8 @@ public class DispatcherShell {
 
 	private final DispatcherShellService shellService;
 
+	private final DisplayService displayService;
+
 	@ShellMethod("Download journal")
 	@ShellMethodAvailability("checkHome")
 	public void downloadJournal(@ShellOption(value = {"-i", "--index"}, help = "索引") Integer index) {
@@ -31,18 +33,18 @@ public class DispatcherShell {
 	@ShellMethod("查看下载目录")
 	@ShellMethodAvailability("checkHome")
 	public void showHome() {
-		System.out.println(context.getHome());
+		displayService.display(context.getHome());
 	}
 
 	@ShellMethod("设置下载目录, 若下载目录不存在将创建")
-	public String setHome(String home) {
+	public void setHome(String home) {
 		context.setHome(home);
-		return "设置下载目录成功";
+		displayService.display("设置下载目录成功");
 	}
 
 	@ShellMethod("下载器版本")
-	public String version() {
-		return context.getVersion();
+	public void showVersion() {
+		displayService.display(context.getVersion());
 	}
 
 	public Availability checkHome() {

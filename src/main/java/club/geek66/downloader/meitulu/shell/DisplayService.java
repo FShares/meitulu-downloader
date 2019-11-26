@@ -14,15 +14,17 @@ import java.io.PrintWriter;
  * @copyright: Copyright 2019 by 橙子
  */
 @Component
-public class TerminalHelper {
+public class DisplayService {
 
 	@Lazy
 	@Autowired
 	private Terminal terminal;
 
-	public void println(String msg) {
+	private Object lock = new Object();
+
+	public void display(String msg) {
 		PrintWriter writer = terminal.writer();
-		synchronized (writer) {
+		synchronized (lock) {
 			writer.println(msg);
 			writer.flush();
 		}

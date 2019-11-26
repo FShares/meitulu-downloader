@@ -2,7 +2,7 @@ package club.geek66.downloader.meitulu.reader;
 
 import club.geek66.downloader.meitulu.dto.JournalCombinationPageInfoDto;
 import club.geek66.downloader.meitulu.dto.JournalPageInfoDto;
-import club.geek66.downloader.meitulu.rpc.MeituluClient;
+import club.geek66.downloader.meitulu.client.MeituluClient;
 import org.jsoup.nodes.Document;
 import org.junit.Assert;
 import org.junit.Test;

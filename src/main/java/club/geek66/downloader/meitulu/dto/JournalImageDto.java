@@ -1,6 +1,5 @@
 package club.geek66.downloader.meitulu.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,14 +11,18 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class JournalImageDto {
+
+	public JournalImageDto(Integer index, JournalPageInfoDto pageInfo) {
+		this.index = index;
+		this.pageInfo = pageInfo;
+	}
 
 	private Integer index;
 
-	private String path;
-
 	private Integer size;
+
+	private String type;
 
 	private JournalPageInfoDto pageInfo;
 

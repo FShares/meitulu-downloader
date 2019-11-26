@@ -1,8 +1,9 @@
 package club.geek66.downloader.meitulu.reader;
 
+import club.geek66.downloader.meitulu.client.MeituluClient;
 import club.geek66.downloader.meitulu.dto.JournalCombinationPageInfoDto;
+import club.geek66.downloader.meitulu.dto.JournalImageDto;
 import club.geek66.downloader.meitulu.dto.JournalPageInfoDto;
-import club.geek66.downloader.meitulu.rpc.MeituluClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -89,7 +90,19 @@ public class MeituluPageReader {
 				.map(Element::text)
 				.map(text -> StringUtils.substringAfter(text, DETAIL_PREFIX))
 				.ifPresent(pageInfo::setAdditional);
+
+		fillPageInfoImage(pageInfo);
+
 		return pageInfo;
+	}
+
+	private void fillPageInfoImage(JournalPageInfoDto pageInfo) {
+		List<JournalImageDto> images = new ArrayList<>();
+		for (int i = 1; i <= pageInfo.getImageCount(); i++) {
+			JournalImageDto image = new JournalImageDto(i, pageInfo);
+			images.add(image);
+		}
+		pageInfo.setImages(images);
 	}
 
 	/**

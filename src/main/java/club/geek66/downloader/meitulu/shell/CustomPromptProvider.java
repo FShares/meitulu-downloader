@@ -16,8 +16,7 @@ public class CustomPromptProvider implements PromptProvider {
 
 	@Override
 	public AttributedString getPrompt() {
-		return new AttributedString("Downloader:>",
-				AttributedStyle.DEFAULT.foreground(AttributedStyle.RED));
+		return new AttributedString("journal-downloader:>", AttributedStyle.DEFAULT.foreground(AttributedStyle.RED));
 	}
 
 }

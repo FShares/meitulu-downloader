@@ -1,4 +1,4 @@
-package club.geek66.downloader.meitulu.controller;
+package club.geek66.downloader.meitulu.common.foo.controller;
 
 /**
  * @author: orange

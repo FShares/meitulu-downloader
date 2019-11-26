@@ -1,4 +1,4 @@
-package club.geek66.downloader.meitulu.rpc;
+package club.geek66.downloader.meitulu.client;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;

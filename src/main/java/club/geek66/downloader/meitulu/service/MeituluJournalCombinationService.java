@@ -1,12 +1,11 @@
 package club.geek66.downloader.meitulu.service;
 
+import club.geek66.downloader.meitulu.client.MeituluPageClient;
 import club.geek66.downloader.meitulu.dto.JournalCombinationPageInfoDto;
 import club.geek66.downloader.meitulu.dto.JournalPageInfoDto;
 import club.geek66.downloader.meitulu.reader.MeituluPageReader;
-import club.geek66.downloader.meitulu.rpc.MeituluPageClient;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.nodes.Document;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,8 +27,6 @@ public class MeituluJournalCombinationService {
 
 	private final MeituluJournalService journalService;
 
-	private final ThreadPoolTaskExecutor taskExecutor;
-
 	public void downloadJournalCombination(String combinationIndex) {
 
 		// 读取信息
@@ -50,12 +47,9 @@ public class MeituluJournalCombinationService {
 	private void saveJournalCombination(JournalCombinationPageInfoDto combinationInfo) {
 		Map<Integer, List<JournalPageInfoDto>> journalPages = combinationInfo.getJournalPages();
 
-
-		journalPages.values().forEach(journals ->
+		journalPages.values().parallelStream().forEach(journals ->
 				journals.forEach(journalPage ->
-						taskExecutor.execute(() ->
-								journalService.downloadJournal(journalPage.getIndex())
-						)
+						journalService.downloadJournal(journalPage.getIndex())
 				));
 	}
 

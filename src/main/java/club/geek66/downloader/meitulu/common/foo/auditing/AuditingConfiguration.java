@@ -1,4 +1,4 @@
-package club.geek66.downloader.meitulu.foo.auditing;
+package club.geek66.downloader.meitulu.common.foo.auditing;
 
 /*
 @Configuration

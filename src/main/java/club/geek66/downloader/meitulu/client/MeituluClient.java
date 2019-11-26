@@ -1,4 +1,4 @@
-package club.geek66.downloader.meitulu.rpc;
+package club.geek66.downloader.meitulu.client;
 
 import lombok.RequiredArgsConstructor;
 import org.jsoup.nodes.Document;

@@ -1,4 +1,4 @@
-package club.geek66.downloader.meitulu.rpc;
+package club.geek66.downloader.meitulu.client;
 
 import club.geek66.downloader.meitulu.common.configuration.DownloaderConfiguration;
 import feign.Contract;
