@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @time: 23:00
  * @copyright: Copyright 2019 by 橙子
  */
-public interface MeituluPageClient {
+interface MeituluPageClient {
 
 	// 图片页面
 	@GetMapping("/item/{journalIndex}.html")

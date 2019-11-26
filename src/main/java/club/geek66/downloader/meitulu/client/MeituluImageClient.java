@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @time: 20:44
  * @copyright: Copyright 2019 by 橙子
  */
-public interface MeituluImageClient {
+interface MeituluImageClient {
 
 	@GetMapping("/images/img/{journalIndex}/{imageIndex}.jpg")
 	ResponseEntity<Resource> getModelImage(@PathVariable Integer journalIndex, @PathVariable Integer imageIndex);

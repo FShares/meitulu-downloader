@@ -1,6 +1,8 @@
 package club.geek66.downloader.meitulu.client;
 
-import club.geek66.downloader.meitulu.client.MeituluPageClient.MeituClassification;
+import club.geek66.downloader.meitulu.client.rpc.MeituluImageClient;
+import club.geek66.downloader.meitulu.client.rpc.MeituluPageClient;
+import club.geek66.downloader.meitulu.client.rpc.MeituluPageClient.MeituClassification;
 import org.jsoup.nodes.Document;
 import org.junit.Assert;
 import org.junit.Test;

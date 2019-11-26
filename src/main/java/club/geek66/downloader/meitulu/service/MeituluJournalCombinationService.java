@@ -1,6 +1,6 @@
 package club.geek66.downloader.meitulu.service;
 
-import club.geek66.downloader.meitulu.client.MeituluPageClient;
+import club.geek66.downloader.meitulu.client.rpc.MeituluPageClient;
 import club.geek66.downloader.meitulu.dto.JournalCombinationPageInfoDto;
 import club.geek66.downloader.meitulu.dto.JournalPageInfoDto;
 import club.geek66.downloader.meitulu.reader.MeituluPageReader;
