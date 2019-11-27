@@ -1,9 +1,9 @@
 package club.geek66.downloader.meitulu.service;
 
 import club.geek66.downloader.meitulu.client.MeituluClient;
-import club.geek66.downloader.meitulu.ctx.DownloaderContext;
 import club.geek66.downloader.meitulu.client.dto.JournalImageDto;
 import club.geek66.downloader.meitulu.client.dto.JournalPageInfoDto;
+import club.geek66.downloader.meitulu.ctx.DownloaderContext;
 import club.geek66.downloader.meitulu.shell.DisplayService;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
 
 /**
  * @author: 橙子
@@ -99,7 +98,7 @@ public class MeituluJournalService {
 		try {
 			startDownloadImage(image);
 			Resource modelImage = client.getModelImage(pageInfo.getIndex(), image.getIndex());
-			FileCopyUtils.copy(Objects.requireNonNull(modelImage).getInputStream(), new FileOutputStream(imageFile));
+			FileCopyUtils.copy(modelImage.getInputStream(), new FileOutputStream(imageFile));
 			finishDownloadImage(image);
 		} catch (IOException e) {
 			e.printStackTrace();

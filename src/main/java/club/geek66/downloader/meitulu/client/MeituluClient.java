@@ -1,10 +1,10 @@
 package club.geek66.downloader.meitulu.client;
 
+import club.geek66.downloader.meitulu.client.dto.JournalCombinationPageInfoDto;
+import club.geek66.downloader.meitulu.client.dto.JournalPageInfoDto;
 import club.geek66.downloader.meitulu.client.feign.MeituluImageClient;
 import club.geek66.downloader.meitulu.client.feign.MeituluPageClient;
 import club.geek66.downloader.meitulu.client.reader.MeituluPageReader;
-import club.geek66.downloader.meitulu.client.dto.JournalCombinationPageInfoDto;
-import club.geek66.downloader.meitulu.client.dto.JournalPageInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.nodes.Document;
 import org.springframework.core.io.Resource;
@@ -36,7 +36,19 @@ public class MeituluClient {
 
 	public JournalCombinationPageInfoDto getCombinationPage(String combinationIndex) {
 		Document combinationPage = pageClient.getCombinationPage(combinationIndex);
-		return reader.readCombinationPage(combinationPage);
+		JournalCombinationPageInfoDto combinationPageInfo = reader.readCombinationPage(combinationPage);
+		fillCombinationPageJournalsInfo(combinationPageInfo);
+		return combinationPageInfo;
+	}
+
+	private void fillCombinationPageJournalsInfo(JournalCombinationPageInfoDto combinationPageInfo) {
+		Integer journalCount = combinationPageInfo.getJournalCount();
+
+		int totalPage = (int) Math.ceil((double) journalCount / 60);
+		for (int pageNo = 1; pageNo <= totalPage; pageNo++) {
+			List<JournalPageInfoDto> journalPageInfos = getCombinationPageJournals(combinationPageInfo.getIndex(), pageNo);
+			combinationPageInfo.getJournalPages().put(pageNo, journalPageInfos);
+		}
 	}
 
 	public List<JournalPageInfoDto> getCombinationPageJournals(String combinationIndex, Integer pageNo) {

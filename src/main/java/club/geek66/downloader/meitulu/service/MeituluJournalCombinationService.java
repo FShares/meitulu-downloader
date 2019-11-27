@@ -24,23 +24,9 @@ public class MeituluJournalCombinationService {
 	private final MeituluJournalService journalService;
 
 	public void downloadJournalCombination(String combinationIndex) {
+		JournalCombinationPageInfoDto combinationPageInfo = client.getCombinationPage(combinationIndex);
 
-		// 读取信息
-		JournalCombinationPageInfoDto combinationPage = client.getCombinationPage(combinationIndex);
-
-		Integer journalCount = combinationPage.getJournalCount();
-
-		int totalPage = (int) Math.ceil((double) journalCount / 60);
-
-		for (int pageNo = 1; pageNo <= totalPage; pageNo++) {
-			List<JournalPageInfoDto> journalPageInfos = client.getCombinationPageJournals(combinationIndex, pageNo);
-			combinationPage.getJournalPages().put(pageNo, journalPageInfos);
-		}
-		saveJournalCombination(combinationPage);
-	}
-
-	private void saveJournalCombination(JournalCombinationPageInfoDto combinationInfo) {
-		Map<Integer, List<JournalPageInfoDto>> journalPages = combinationInfo.getJournalPages();
+		Map<Integer, List<JournalPageInfoDto>> journalPages = combinationPageInfo.getJournalPages();
 
 		journalPages.values().parallelStream().forEach(journals ->
 				journals.forEach(journalPage ->
