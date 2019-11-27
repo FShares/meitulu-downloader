@@ -12,7 +12,7 @@
 使用命令行进入项目目录 执行 `mvn install -DskipTests` <br/>
 项目构建完成 在命令行执行 `mvn spring-boot:run`<br/>
 成功运行项目后, 会出现一个shell命令行终端, 可以使用help来查看当前有哪些命令<br/>
-使用命令可以使用tab补全, 如果terminal支持的话<br/>
+使用tab可以提示补全命令, 如果terminal支持的话<br/>
 ```jshelllanguage
 AVAILABLE COMMANDS
 
@@ -36,14 +36,15 @@ Dispatcher Shell
 # 命令介绍
 1.`download-combination`<br/>
 ```jshelllanguage
-download-combination nvshen
+// 示例: download-combination nvshen
+// 说明: 下载一个套图集合, 下载套图集合后会自动在资源管理器中展示
 ```
-下载一个套图集合, 下载套图集合后会自动在资源管理器中展示<br/>
 2.`download-journal`<br/>
-下载一个套图, 下载完成后会在资源管理器中展示<br/>
 ```jshelllanguage
-download-journal 19721
+// 示例: download-journal 19721
+// 说明: 下载一个套图, 下载完成后会在资源管理器中展示
 ```
+
 3.`show-home`<br/>
 查看下载目录, 默认每次程序启动都会读取配置文件中值<br/>
 4.set-home<br/>
