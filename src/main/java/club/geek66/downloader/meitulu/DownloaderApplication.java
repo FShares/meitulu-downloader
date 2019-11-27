@@ -1,7 +1,7 @@
 package club.geek66.downloader.meitulu;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 
@@ -11,7 +11,9 @@ import org.springframework.context.annotation.ComponentScan;
 public class DownloaderApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DownloaderApplication.class, args);
+		new SpringApplicationBuilder(DownloaderApplication.class)
+				.headless(false)
+				.run(args);
 	}
 
 }

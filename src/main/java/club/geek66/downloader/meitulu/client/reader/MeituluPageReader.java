@@ -44,7 +44,7 @@ public class MeituluPageReader {
 	/**
 	 * 读取写真详情页面内信息
 	 *
-	 * @param journalPageDoc 索引对应的文档
+	 * @param journalPageDoc 写真详情页面html文档
 	 * @return 写真页面的信息
 	 */
 	public JournalPageInfoDto readJournalPage(Document journalPageDoc) {
@@ -91,6 +91,11 @@ public class MeituluPageReader {
 		return pageInfo;
 	}
 
+	/**
+	 * 填充写真详情页面下的图片
+	 *
+	 * @param pageInfo
+	 */
 	private void fillPageInfoImage(JournalPageInfoDto pageInfo) {
 		List<JournalImageDto> images = new ArrayList<>();
 		for (int i = 1; i <= pageInfo.getImageCount(); i++) {
@@ -238,20 +243,44 @@ public class MeituluPageReader {
 		return pageInfos;
 	}
 
+	/**
+	 * 截取写真index
+	 *
+	 * @param journalPageUrl
+	 * @return
+	 */
 	private Integer subJournalIndex(String journalPageUrl) {
 		String journalIndex = StringUtils.substringBetween(journalPageUrl, "/item/", ".html");
 		return Integer.valueOf(journalIndex);
 	}
 
+	/**
+	 * 截取图片数量
+	 *
+	 * @param imageText
+	 * @return
+	 */
 	private Integer subImageCount(String imageText) {
 		String imageCount = StringUtils.substringBetween(imageText, "：", "张");
 		return Integer.valueOf(imageCount);
 	}
 
+	/**
+	 * 截取写真详情index
+	 *
+	 * @param combinationPageUrl
+	 * @return
+	 */
 	private String subCombinationIndex(String combinationPageUrl) {
 		return StringUtils.substringBetween(combinationPageUrl, "/t/", "/");
 	}
 
+	/**
+	 * 解析机构Id和name
+	 *
+	 * @param pageInfo
+	 * @param element
+	 */
 	private void readModelIndexAndName(JournalPageInfoDto pageInfo, Element element) {
 		Optional.ofNullable(element.children())
 				.map(Elements::first)
@@ -262,6 +291,12 @@ public class MeituluPageReader {
 		// TODO multi model support
 	}
 
+	/**
+	 * 截取机构index和name
+	 *
+	 * @param pageInfo
+	 * @param element
+	 */
 	private void readMechanismIndexAndName(JournalPageInfoDto pageInfo, Element element) {
 		Optional.ofNullable(element.children())
 				.map(Elements::first)

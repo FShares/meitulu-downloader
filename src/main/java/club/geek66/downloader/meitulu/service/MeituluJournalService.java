@@ -12,6 +12,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -59,8 +60,20 @@ public class MeituluJournalService {
 		startReadPage(journalIndex);
 		JournalPageInfoDto pageInfo = client.getJournalPage(journalIndex);
 		finishReadPage(pageInfo);
-
 		downloadImage(pageInfo);
+		openView(pageInfo);
+	}
+
+	private void openView(JournalPageInfoDto pageInfo) {
+		try {
+			Desktop.getDesktop().open(getJournalFile(pageInfo));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private File getJournalFile(JournalPageInfoDto journalPageInfo) {
+		return Path.of(context.getHome(), journalPageInfo.getIndex().toString()).toFile();
 	}
 
 	private void downloadImage(JournalPageInfoDto pageInfo) {
