@@ -1,0 +1,11 @@
+logging:
+  level:
+    root: "OFF"
+#    club:
+#      geek66:
+#        downloader: warn
+#    com:
+#      netflix: error
+#    org:
+#      jline: error
+#      springframework: error

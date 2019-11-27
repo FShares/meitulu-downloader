@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * @author: orange
@@ -54,13 +55,14 @@ public final class DownloaderContext {
 	private void checkPermission(File file) throws ShellContextException {
 		boolean canWrite = file.canWrite();
 		boolean canRead = file.canRead();
-		if (!(canWrite && canRead)) {
-			throw new ShellContextException("请授予读写权限, 可读?" + canRead + "可写?" + canWrite);
+		if (canWrite && canRead) {
+			return;
 		}
+		throw new ShellContextException("检查当前目录发现一个问题, 读?" + canRead + "写?" + canWrite + ", 请赋予读写权限");
 	}
 
 	public String getHome() {
-		return this.home;
+		return Paths.get(this.home).toString();
 	}
 
 	public String getVersion() {

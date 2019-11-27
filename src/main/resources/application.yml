@@ -1,14 +1,3 @@
-logging:
-  level:
-    club:
-      geek66:
-        downloader: warn
-    com:
-      netflix: error
-    org:
-      jline: error
-      springframework: error
-
 downloader:
   version: @project.version@
   home: /home/orange/.journal/images
