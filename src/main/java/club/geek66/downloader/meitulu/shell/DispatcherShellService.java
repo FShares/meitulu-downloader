@@ -1,5 +1,6 @@
 package club.geek66.downloader.meitulu.shell;
 
+import club.geek66.downloader.meitulu.service.MeituluJournalCombinationService;
 import club.geek66.downloader.meitulu.service.MeituluJournalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,14 @@ public class DispatcherShellService {
 
 	private final MeituluJournalService journalService;
 
+	private final MeituluJournalCombinationService combinationService;
+
 	public void downloadJournal(Integer index) {
 		journalService.downloadJournal(index);
 	}
+
+	public void downloadCombination(String index) {
+		combinationService.downloadJournalCombination(index);
+	}
+
 }

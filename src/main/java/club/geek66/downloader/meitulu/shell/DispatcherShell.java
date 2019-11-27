@@ -26,8 +26,13 @@ public class DispatcherShell {
 
 	@ShellMethod("Download journal")
 	@ShellMethodAvailability("checkHome")
-	public void downloadJournal(@ShellOption(value = {"-i", "--index"}, help = "索引") Integer index) {
+	public void downloadJournal(@ShellOption({"-i", "--index"}) Integer index) {
 		shellService.downloadJournal(index);
+	}
+
+	@ShellMethod("Download Journal combination")
+	public void downloadCombination(@ShellOption({"-i", "--index"}) String index) {
+		shellService.downloadCombination(index);
 	}
 
 	@ShellMethod("查看下载目录")
