@@ -9,7 +9,7 @@
 		<relativePath/>
 	</parent>
 	<groupId>club.geek66</groupId>
-	<artifactId>downloader</artifactId>
+	<artifactId>meitulu-downloader</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
