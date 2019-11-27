@@ -1,29 +1,14 @@
 package club.geek66.downloader.meitulu.common.foo;
 
-import org.apache.commons.lang.StringUtils;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import javax.swing.text.PlainDocument;
-import java.awt.Color;
-
 /**
  * @author: orange
  * @date: 19-11-22
  * @time: 下午6:46
  * @copyright: Copyright 2019 by orange
  */
-public class Foo {
+/*public class Foo {
 
-	/*public static void main(String[] args) {
+	*//*public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {
 			JProgressBar progressBar = new JProgressBar(0, 100);
 			progressBar.setValue(0);
@@ -41,7 +26,7 @@ public class Foo {
 			JTextField textField = new JTextField();
 			frame.add(textField);
 		});
-	}*/
+	}*//*
 
 	public static class MainFrame extends JFrame {
 
@@ -110,4 +95,4 @@ public class Foo {
 
 	}
 
-}
+}*/

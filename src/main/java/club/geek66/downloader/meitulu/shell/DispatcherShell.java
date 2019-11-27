@@ -24,13 +24,13 @@ public class DispatcherShell {
 
 	private final DisplayService displayService;
 
-	@ShellMethod("Download journal")
+	@ShellMethod("下载套图")
 	@ShellMethodAvailability("checkHome")
 	public void downloadJournal(@ShellOption({"-i", "--index"}) Integer index) {
 		shellService.downloadJournal(index);
 	}
 
-	@ShellMethod("Download Journal combination")
+	@ShellMethod("下载套图集合")
 	public void downloadCombination(@ShellOption({"-i", "--index"}) String index) {
 		shellService.downloadCombination(index);
 	}
@@ -47,7 +47,7 @@ public class DispatcherShell {
 		displayService.display("设置下载目录成功");
 	}
 
-	@ShellMethod("下载器版本")
+	@ShellMethod("查看下载器版本")
 	public void showVersion() {
 		displayService.display(context.getVersion());
 	}
