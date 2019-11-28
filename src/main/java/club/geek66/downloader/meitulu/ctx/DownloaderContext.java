@@ -68,7 +68,7 @@ public final class DownloaderContext {
 	}
 
 	public String getHome() {
-		return Path.of(manager.getSetting().getHome()).toString();
+		return Path.of(manager.getSetting().getHome()).toAbsolutePath().toString();
 	}
 
 	public String getVersion() {

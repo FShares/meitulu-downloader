@@ -77,6 +77,9 @@ public class SettingManager {
 	private void saveSetting(DownloaderSetting patchSetting) {
 		try {
 			String setting = mapper.writeValueAsString(patchSetting);
+			if (!Files.exists(settingPath)) {
+				Files.createFile(settingPath);
+			}
 			Files.write(settingPath, setting.getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);

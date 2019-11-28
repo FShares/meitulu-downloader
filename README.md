@@ -1,7 +1,7 @@
 # 简介
 一个关于[美图录](https://www.meitulu.com)的图片下载器<br/>
 通过命令行命令来下载图片<br/>
-项目基于java以及maven, 需要安装它们才能运行本项目<br/>
+项目基于maven构建, java sdk版本11, 需要安装它们才能运行本项目<br/>
 // TODO 后期会打包windows平台下exe文件以便于不需要安装基本环境下快速启动
 
 # 功能
@@ -46,7 +46,7 @@ Dispatcher Shell
 ```
 
 3.`show-home`<br/>
-查看下载目录, 默认每次程序启动都会读取配置文件中值<br/>
+查看下载目录<br/>
 4.set-home<br/>
 修改下载目录<br/>
 
