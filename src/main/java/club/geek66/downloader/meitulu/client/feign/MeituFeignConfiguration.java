@@ -1,6 +1,6 @@
 package club.geek66.downloader.meitulu.client.feign;
 
-import club.geek66.downloader.meitulu.configuration.DownloaderConfiguration;
+import club.geek66.downloader.meitulu.setting.DownloaderSetting;
 import feign.Contract;
 import feign.Feign;
 import feign.FeignException;
@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Import;
 @Import(FeignClientsConfiguration.class)
 public class MeituFeignConfiguration {
 
-	private final DownloaderConfiguration configuration;
+	private final DownloaderSetting configuration;
 
 	@Bean
 	public RequestInterceptor requestInterceptor() {

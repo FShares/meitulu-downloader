@@ -1,4 +1,4 @@
-package club.geek66.downloader.meitulu.configuration;
+package club.geek66.downloader.meitulu.setting;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -13,9 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @Configuration
 @ConfigurationProperties("downloader")
-public class DownloaderConfiguration {
-
-	private String version = "0.1";
+public class DownloaderSetting {
 
 	private String home = "/home/orange/.cache/journal/";
 

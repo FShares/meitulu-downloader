@@ -1,7 +1,9 @@
 package club.geek66.downloader.meitulu.ctx;
 
-import club.geek66.downloader.meitulu.configuration.DownloaderConfiguration;
+import club.geek66.downloader.meitulu.setting.DownloaderSetting;
+import club.geek66.downloader.meitulu.setting.SettingManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -9,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * @author: orange
@@ -21,13 +22,15 @@ import java.nio.file.Paths;
 @RequiredArgsConstructor
 public final class DownloaderContext {
 
-	private final DownloaderConfiguration config;
+	private final SettingManager manager;
 
-	private String home;
+	@Value("@project.version@")
+	private String version;
 
 	@PostConstruct
 	public void init() {
-		setHome(config.getHome());
+		DownloaderSetting setting = manager.getSetting();
+		setHome(setting.getHome());
 	}
 
 	public void setHome(String home) throws ShellContextException {
@@ -40,12 +43,15 @@ public final class DownloaderContext {
 			}
 		}
 		checkPermission(file);
-		this.home = home;
+		DownloaderSetting setting = manager.getSetting();
+		setting.setHome(home);
+		manager.updateSetting(setting);
 	}
 
 	public boolean checkHome() {
 		try {
-			checkPermission(new File(home));
+			DownloaderSetting setting = manager.getSetting();
+			checkPermission(new File(setting.getHome()));
 			return true;
 		} catch (ShellContextException e) {
 			return false;
@@ -62,11 +68,11 @@ public final class DownloaderContext {
 	}
 
 	public String getHome() {
-		return Paths.get(this.home).toString();
+		return Path.of(manager.getSetting().getHome()).toString();
 	}
 
 	public String getVersion() {
-		return config.getVersion();
+		return version;
 	}
 
 	private class ShellContextException extends RuntimeException {

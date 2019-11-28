@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @EnableAutoConfiguration
 @EnableConfigurationProperties
-@ComponentScan(basePackages = "club.geek66.downloader.meitulu", lazyInit = true)
+@ComponentScan("club.geek66.downloader.meitulu")
 public class DownloaderApplication {
 
 	public static void main(String[] args) {

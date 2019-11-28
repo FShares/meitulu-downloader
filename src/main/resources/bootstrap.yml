@@ -1,11 +1,17 @@
 logging:
   level:
     root: "OFF"
-#    club:
-#      geek66:
-#        downloader: warn
-#    com:
-#      netflix: error
-#    org:
-#      jline: error
-#      springframework: error
+    club:
+      geek66:
+        downloader: warn
+    com:
+      netflix: error
+    org:
+      jline: error
+      springframework: error
+
+spring:
+  application:
+    name: meitulu-downloader
+  main:
+    banner-mode: "OFF"
