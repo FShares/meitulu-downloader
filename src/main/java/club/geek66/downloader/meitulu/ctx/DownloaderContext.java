@@ -29,42 +29,31 @@ public final class DownloaderContext {
 
 	@PostConstruct
 	public void init() {
-		DownloaderSetting setting = manager.getSetting();
-		setHome(setting.getHome());
+		setHome(manager.getSetting().getHome());
 	}
 
-	public void setHome(String home) throws ShellContextException {
+	public void setHome(String home) throws DownloaderContextException {
 		File file = new File(home);
 		if (!file.exists()) {
 			try {
 				Files.createDirectories(Path.of(file.getPath()));
 			} catch (IOException e) {
-				throw new ShellContextException("创建目录失败:" + e.getMessage());
+				throw new DownloaderContextException("创建目录失败:" + e.getMessage());
 			}
 		}
-		checkPermission(file);
+		checkPermission(home);
 		DownloaderSetting setting = manager.getSetting();
 		setting.setHome(home);
 		manager.updateSetting(setting);
 	}
 
-	public boolean checkHome() {
-		try {
-			DownloaderSetting setting = manager.getSetting();
-			checkPermission(new File(setting.getHome()));
-			return true;
-		} catch (ShellContextException e) {
-			return false;
-		}
-	}
-
-	private void checkPermission(File file) throws ShellContextException {
+	private void checkPermission(String home) throws DownloaderContextException {
+		File file = new File(home);
 		boolean canWrite = file.canWrite();
 		boolean canRead = file.canRead();
-		if (canWrite && canRead) {
-			return;
+		if (!(canRead && canWrite)) {
+			throw new DownloaderContextException("检查当前目录发现一个问题, 读?" + canRead + "写?" + canWrite + ", 请赋予读写权限");
 		}
-		throw new ShellContextException("检查当前目录发现一个问题, 读?" + canRead + "写?" + canWrite + ", 请赋予读写权限");
 	}
 
 	public String getHome() {
@@ -75,9 +64,13 @@ public final class DownloaderContext {
 		return version;
 	}
 
-	private class ShellContextException extends RuntimeException {
+	public void checkHome() {
+		checkPermission(manager.getSetting().getHome());
+	}
 
-		private ShellContextException(String msg) {
+	public class DownloaderContextException extends RuntimeException {
+
+		private DownloaderContextException(String msg) {
 			super(msg);
 		}
 

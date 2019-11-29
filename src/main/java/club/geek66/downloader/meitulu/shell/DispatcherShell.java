@@ -44,7 +44,7 @@ public class DispatcherShell {
 	@ShellMethod("设置下载目录, 若下载目录不存在将创建")
 	public void setHome(String home) {
 		context.setHome(home);
-		displayService.display("设置下载目录成功");
+		displayService.display("设置下载目录成功" + home);
 	}
 
 	@ShellMethod("查看下载器版本")
@@ -53,7 +53,12 @@ public class DispatcherShell {
 	}
 
 	public Availability checkHome() {
-		return context.checkHome() ? Availability.available() : Availability.unavailable("请给目录合理权限");
+		try {
+			context.checkHome();
+			return Availability.available();
+		} catch (DownloaderContext.DownloaderContextException ex) {
+			return Availability.unavailable("请给目录合理权限");
+		}
 	}
 
 }

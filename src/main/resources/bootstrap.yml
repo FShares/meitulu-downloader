@@ -15,3 +15,6 @@ spring:
     name: meitulu-downloader
   main:
     banner-mode: "OFF"
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true

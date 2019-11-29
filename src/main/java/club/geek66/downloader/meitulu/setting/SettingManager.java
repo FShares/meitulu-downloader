@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Objects;
 
 /**
  * @author: orange
@@ -36,12 +37,11 @@ public class SettingManager {
 
 	@PostConstruct
 	public void initSetting() throws IOException {
-
 		DownloaderSetting newSetting = new DownloaderSetting();
 		BeanUtils.copyProperties(defaultSetting, newSetting);
 		defaultSetting = newSetting;
 
-		settingPath = Path.of(System.getProperty("user.home"), ".journal-downloader", "conf.json");
+		settingPath = Path.of(Objects.requireNonNull(System.getProperty("user.home")), ".meitulu-downloader", "setting", "setting.json");
 		if (!Files.exists(settingPath)) {
 			Files.createDirectories(settingPath.getParent());
 			updateSetting(defaultSetting);
@@ -64,14 +64,13 @@ public class SettingManager {
 		return readLocalSetting();
 	}
 
-	public DownloaderSetting updateSetting(DownloaderSetting patchSetting) {
+	public void updateSetting(DownloaderSetting patchSetting) {
 		DownloaderSetting originSetting = readLocalSetting();
 		if (originSetting != patchSetting) {
 			BeanUtils.copyProperties(patchSetting, originSetting);
 		}
 		saveSetting(patchSetting);
 		tempSetting = originSetting;
-		return originSetting;
 	}
 
 	private void saveSetting(DownloaderSetting patchSetting) {
