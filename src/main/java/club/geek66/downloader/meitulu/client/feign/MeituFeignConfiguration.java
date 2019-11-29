@@ -9,12 +9,17 @@ import feign.RetryableException;
 import feign.Retryer;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
+import feign.codec.ErrorDecoder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FeignClientsConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -40,15 +45,17 @@ public class MeituFeignConfiguration {
 	}
 
 	public Retryer customRetryer() {
+		List<String> errorMsgs = Arrays.asList("No PSK available", "status 504 reading");
 		return new Retryer() {
 			@Override
 			public void continueOrPropagate(RetryableException e) {
+				if (errorMsgs.contains(e.getMessage())) {
+					// NOTHING TODO
+					return;
+				}
 				if (FeignException.NotFound.class.equals(e.getClass())) {
 					log.warn(e.getMessage());
 					throw e;
-				}
-				if (e.getMessage().contains("No PSK available")) {
-					log.warn(e.getMessage());
 				}
 			}
 
@@ -59,6 +66,22 @@ public class MeituFeignConfiguration {
 		};
 	}
 
+	private ErrorDecoder errorDecoder() {
+		ErrorDecoder.Default defaultDecoder = new ErrorDecoder.Default();
+		return ((key, response) -> {
+			Exception exception = defaultDecoder.decode(key, response);
+			if (exception.getMessage().startsWith("status 504 reading")) {
+				return new RetryableException(
+						response.status(),
+						exception.getMessage(),
+						response.request().httpMethod(),
+						exception,
+						new Date());
+			}
+			return exception;
+		});
+	}
+
 	@Bean
 	public MeituluPageClient meituluPageClient(Encoder encoder, Decoder decoder, Contract contract, Feign.Builder builder) {
 		return builder
@@ -67,6 +90,7 @@ public class MeituFeignConfiguration {
 				.contract(contract)
 				.requestInterceptor(requestInterceptor())
 				.retryer(customRetryer())
+				.errorDecoder(errorDecoder())
 				.target(MeituluPageClient.class, configuration.getPageHost());
 	}
 
