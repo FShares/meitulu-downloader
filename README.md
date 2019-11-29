@@ -34,12 +34,12 @@ Dispatcher Shell
 ```
 
 # 命令介绍
-1.`download-combination`<br/>
+1.`download-combination 套图集合索引`<br/>
 ```jshelllanguage
 // 示例: download-combination nvshen
 // 说明: 下载一个套图集合, 下载套图集合后会自动在资源管理器中展示
 ```
-2.`download-journal`<br/>
+2.`download-journal 套图索引`<br/>
 ```jshelllanguage
 // 示例: download-journal 19721
 // 说明: 下载一个套图, 下载完成后会在资源管理器中展示
