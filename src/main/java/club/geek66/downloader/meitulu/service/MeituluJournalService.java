@@ -12,6 +12,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
+import javax.annotation.PostConstruct;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,6 +36,11 @@ public class MeituluJournalService {
 	private final DownloaderContext context;
 
 	private final DisplayService helper;
+
+	@PostConstruct
+	public void init() {
+		System.setProperty("java.awt.headless", "false");
+	}
 
 	private void startReadPage(Integer journalIndex) {
 		/*helper.display("read Journal with index" + journalIndex);*/
