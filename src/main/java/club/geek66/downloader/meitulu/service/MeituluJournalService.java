@@ -5,6 +5,8 @@ import club.geek66.downloader.meitulu.client.dto.JournalImageDto;
 import club.geek66.downloader.meitulu.client.dto.JournalPageInfoDto;
 import club.geek66.downloader.meitulu.ctx.DownloaderContext;
 import club.geek66.downloader.meitulu.shell.DisplayService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +39,8 @@ public class MeituluJournalService {
 
 	private final DisplayService helper;
 
+	private final ObjectMapper mapper;
+
 	@PostConstruct
 	public void init() {
 		System.setProperty("java.awt.headless", "false");
@@ -67,7 +71,21 @@ public class MeituluJournalService {
 		JournalPageInfoDto pageInfo = client.getJournalPage(journalIndex);
 		finishReadPage(pageInfo);
 		downloadImage(pageInfo);
+		saveJournalInfo(pageInfo);
 		openView(pageInfo);
+	}
+
+	private void saveJournalInfo(JournalPageInfoDto pageInfo) {
+		Path journalInfo = Path.of(context.getHome(), pageInfo.getIndex().toString(), "journal-info.json");
+		if (!Files.exists(journalInfo)) {
+			try {
+				String json = mapper.writeValueAsString(pageInfo);
+				Files.writeString(journalInfo, json);
+			} catch (JsonProcessingException ignored) {
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private void openView(JournalPageInfoDto pageInfo) {
