@@ -19,14 +19,26 @@ public class MeituluJournalCombinationServiceTest {
 	@Autowired
 	private MeituluJournalCombinationService service;
 
+
+	public void ligui(){service.downloadJournalCombination("ligui");}
+
+	public void iess(){ service.downloadJournalCombination("iess");}
+
+	public void siwayouhuo(){service.downloadJournalCombination("siwayouhuo");}
+	// download-combination: 下载套图集合
+
+
 	@Test
 	public void downloadJournalCombination() {
-		// service.downloadJournalCombination("1148");
-		// service.downloadJournalCombination("yuji-una");
-		// service.downloadJournalCombination("wangyuchun");
+
+//		service.downloadJournalCombination("qipao"); // 旗袍
+		service.downloadJournalCombination("1083"); // 丝袜美女
+		service.downloadJournalCombination("1461"); //丽丝映像GIRLISS
+//		service.downloadJournalCombination("1084"); // 白丝
+//		service.downloadJournalCombination("1085"); // 灰丝
+//		service.downloadJournalCombination("1086"); // 红丝
+//		service.downloadJournalCombination("1089"); // 丝袜控
 		// service.downloadJournalCombination("1165");
-		// service.downloadJournalCombination("1214");
-		// service.downloadJournalCombination("sugar-xiaotianxincc");
 		// service.downloadJournalCombination("sabrina");
 	}
 }

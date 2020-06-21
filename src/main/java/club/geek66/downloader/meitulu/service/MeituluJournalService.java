@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
 import javax.annotation.PostConstruct;
-import java.awt.Desktop;
+import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -69,10 +69,9 @@ public class MeituluJournalService {
 	public void downloadJournal(Integer journalIndex) {
 		startReadPage(journalIndex);
 		JournalPageInfoDto pageInfo = client.getJournalPage(journalIndex);
-		finishReadPage(pageInfo);
-		downloadImage(pageInfo);
-		saveJournalInfo(pageInfo);
-		openView(pageInfo);
+		//finishReadPage(pageInfo);
+		if(downloadImage(pageInfo)) saveJournalInfo(pageInfo);
+		//openView(pageInfo);
 	}
 
 	private void saveJournalInfo(JournalPageInfoDto pageInfo) {
@@ -100,14 +99,18 @@ public class MeituluJournalService {
 		return Path.of(context.getHome(), journalPageInfo.getIndex().toString()).toFile();
 	}
 
-	private void downloadImage(JournalPageInfoDto pageInfo) {
+	private boolean downloadImage(JournalPageInfoDto pageInfo) {
+		boolean ret = false;
 		if (createDirectory(pageInfo)) {
 			pageInfo.getImages().parallelStream().forEach(this::downloadImage);
+			ret=true;
 		}
+		return ret;
 		// TODO create dir fail handle
 	}
 
 	private boolean createDirectory(JournalPageInfoDto pageInfo) {
+		if(Files.exists(Path.of(context.getHome(), pageInfo.getIndex().toString()))) return false;
 		try {
 			Files.createDirectories(Path.of(context.getHome(), pageInfo.getIndex().toString()));
 			return true;
@@ -137,10 +140,12 @@ public class MeituluJournalService {
 			Resource modelImage = client.getModelImage(pageInfo.getIndex(), image.getIndex());
 			FileCopyUtils.copy(modelImage.getInputStream(), new FileOutputStream(imageFile));
 			finishDownloadImage(image);
+
 		} catch (IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		} catch (FeignException.NotFound notFound) {
 			log.warn("Image not found! journal index {}, image index {}", pageInfo.getIndex(), image.getIndex());
+		} catch (Exception ignored) {
 		}
 	}
 

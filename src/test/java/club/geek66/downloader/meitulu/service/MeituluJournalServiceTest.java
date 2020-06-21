@@ -23,11 +23,39 @@ public class MeituluJournalServiceTest {
 	@Autowired
 	private MeituluJournalService service;
 
+
 	@Test
 	public void testDownloadJournal() {
-		service.downloadJournal(18993);
-		service.downloadJournal(17634);
-		service.downloadJournal(16354);
+		service.downloadJournal(21075);
+//		service.downloadJournal(20238);
+//		service.downloadJournal(21222);
+//		service.downloadJournal(17196);
+//		service.downloadJournal(14324);
+//		service.downloadJournal(14107);
+//		service.downloadJournal(12847);
+//		service.downloadJournal(12689);
+//		service.downloadJournal(14059);
+//		service.downloadJournal(20841);
+//		service.downloadJournal(16868);
+//		service.downloadJournal(15008);
+//		service.downloadJournal(16237);
+//		service.downloadJournal(16238);
+//		service.downloadJournal(17634);
+//		service.downloadJournal(20739);
+//		service.downloadJournal(20858);
+//		service.downloadJournal(20691);
+//		service.downloadJournal(19751);
+//		service.downloadJournal(19019);
+
+
+
+//		service.downloadJournal(20398);
+//		service.downloadJournal(20399);
+//		service.downloadJournal(20400);
+//		service.downloadJournal(21273);
+//		service.downloadJournal(21251);
+//		service.downloadJournal(21244);
+//		service.downloadJournal(21222);
 	}
 
 }
